@@ -11,15 +11,17 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/signIn")  
 public class SignInRouteController extends BaseRouteController {
-	// TODO: Route for initial page load
+	// TODO: Route for initial page load: DONE ( i think)
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ModelAndView performSignIn(
+	public ModelAndView performSignIn(HttpServletRequest request)
 		// TODO: Define an object that will represent the sign in request and add it as a parameter here
-		HttpServletRequest request
-	) {
+		{
+			
+			// ModelAndView modelAndView= 
+			// new ModelAndView(ViewNames.PRODU)
 
 		// TODO: Use the credentials provided in the request body
 		//  and the "id" property of the (HttpServletRequest)request.getSession() variable

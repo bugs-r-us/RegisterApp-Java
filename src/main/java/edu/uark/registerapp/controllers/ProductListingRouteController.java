@@ -23,6 +23,7 @@ public class ProductListingRouteController {
 			modelAndView.addObject(
 				ViewModelNames.PRODUCTS.getValue(),
 				this.productsQuery.execute());
+
 		} catch (final Exception e) {
 			modelAndView.addObject(
 				ViewModelNames.ERROR_MESSAGE.getValue(),
