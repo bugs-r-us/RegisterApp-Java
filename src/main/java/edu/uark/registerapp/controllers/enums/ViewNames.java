@@ -1,6 +1,6 @@
 package edu.uark.registerapp.controllers.enums;
 
-public enum ViewNames {
+public enum ViewNames {             //TEMPLATE NAMES ARE
 	SIGN_IN("signIn", "/"),
 	MAIN_MENU("mainMenu"),
 	PRODUCT_DETAIL("productDetail"),
@@ -17,6 +17,7 @@ public enum ViewNames {
 	private String route;
 	private String viewName;
 
+	// /signIn
 	private ViewNames(final String viewName) {
 		this(viewName, "/".concat(viewName));
 	}

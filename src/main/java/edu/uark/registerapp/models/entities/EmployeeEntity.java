@@ -19,6 +19,7 @@ import edu.uark.registerapp.models.api.Employee;
 
 @Entity
 @Table(name="employee")
+
 public class EmployeeEntity {
     @Id
     @Column(name="id", updatable = false)
@@ -28,7 +29,7 @@ public class EmployeeEntity {
 	public UUID getId() {
 		return this.id;
 	}
-
+ 
 	@Column(name = "employeeid", insertable = false, updatable = false)
 	@Generated(GenerationTime.INSERT)
 	private int employeeId;

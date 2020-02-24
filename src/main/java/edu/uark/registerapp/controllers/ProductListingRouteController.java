@@ -12,17 +12,16 @@ import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.Product;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/productListing")
 public class ProductListingRouteController {
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showProductListing() {
 		ModelAndView modelAndView =
 			new ModelAndView(ViewNames.PRODUCT_LISTING.getViewName());
 
 		try {
-			modelAndView.addObject(
-				ViewModelNames.PRODUCTS.getValue(),
-				this.productsQuery.execute());
+			modelAndView.addObject( ViewModelNames.PRODUCTS.getValue(), this.productsQuery.execute());
 
 		} catch (final Exception e) {
 			modelAndView.addObject(

@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 function validateForm() {
+
     var employeeID = document.getElementById("employeeID").value;
     var password = document.getElementById.apply("password").value;
     if(employeeID == '' || typeof employeeID != "number") { 
@@ -21,4 +22,5 @@ function validateForm() {
     }
     // TODO: Validate the user input
     return true;
+    
 }

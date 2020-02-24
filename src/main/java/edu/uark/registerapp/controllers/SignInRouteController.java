@@ -1,27 +1,41 @@
 package edu.uark.registerapp.controllers;
-
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import edu.uark.registerapp.controllers.enums.ViewModelNames;
 
 import edu.uark.registerapp.controllers.enums.ViewNames;
 
 @Controller
-@RequestMapping(value = "/signIn")  
+@RequestMapping(value = "/")
 public class SignInRouteController extends BaseRouteController {
-	// TODO: Route for initial page load: DONE ( i think)
+	// TODO: Route for initial page load
+	@RequestMapping(method = RequestMethod.GET)
+	// public String SignInHome( @RequestParam Map<String, String> object)
+	// {
+	// 	return (ViewNames.SIGN_IN.getViewName());
+			
+	// }
+	public ModelAndView showSignIn() {
+		ModelAndView modelAndView =
+			new ModelAndView(ViewNames.SIGN_IN.getViewName());
+			return modelAndView;
+	}
+
+	
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ModelAndView performSignIn(HttpServletRequest request)
+	public ModelAndView performSignIn(
 		// TODO: Define an object that will represent the sign in request and add it as a parameter here
-		{
-			
-			// ModelAndView modelAndView= 
-			// new ModelAndView(ViewNames.PRODU)
+		HttpServletRequest request
+	) 
+	{
 
 		// TODO: Use the credentials provided in the request body
 		//  and the "id" property of the (HttpServletRequest)request.getSession() variable

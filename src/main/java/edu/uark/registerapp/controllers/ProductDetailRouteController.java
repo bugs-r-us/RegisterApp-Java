@@ -14,7 +14,10 @@ import edu.uark.registerapp.models.api.Product;
 
 @Controller
 @RequestMapping(value = "/productDetail")
+
+
 public class ProductDetailRouteController {
+	//START
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView start() {
 		return (new ModelAndView(ViewNames.PRODUCT_DETAIL.getViewName()))
@@ -23,6 +26,7 @@ public class ProductDetailRouteController {
 				(new Product()).setLookupCode(StringUtils.EMPTY).setCount(0));
 	}
 
+	//GET PRODUCR ID
 	@RequestMapping(value = "/{productId}", method = RequestMethod.GET)
 	public ModelAndView startWithProduct(@PathVariable final UUID productId) {
 		final ModelAndView modelAndView =
