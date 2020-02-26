@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uark.registerapp.commands.exceptions.NotFoundException;
+import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
+import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.Employee;
@@ -28,11 +30,23 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		@RequestParam final Map<String, String> queryParameters,
 		final HttpServletRequest request
 	) {
-
+		final Optional<ActiveUserEntity> activeUserEntity =
+			this.getCurrentUser(request);
+		if(this.isElevatedUser(activeUserEntity.get())) { //need if no employees exist 
+			return new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()); //not sure if right
+		}
+		else if(!activeUserEntity.isPresent()) {
+			return (new ModelAndView("redirect:/" + ViewNames.PRODUCT_DETAIL.getViewName()).addObject(
+				ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED.getMessage()));
+			//  add error message
+		}
+		else {
+			return(new ModelAndView("redirect:/" + ViewNames.MAIN_MENU.getViewName()).addObject(
+				ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED.getMessage()));
+		}
 		// TODO: Logic to determine if the user associated with the current session
 		//  is able to create an employee
-
-		return new ModelAndView(ViewModelNames.EMPLOYEE_TYPES.getValue());
+		// return new ModelAndView(ViewModelNames.EMPLOYEE_TYPES.getValue());
 	}
 
 	@RequestMapping(value = "/{employeeId}", method = RequestMethod.GET)
@@ -46,9 +60,15 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 			this.getCurrentUser(request);
 
 		if (!activeUserEntity.isPresent()) {
-			return this.buildInvalidSessionResponse();
+			return (new ModelAndView("redirect:/" + ViewNames.SIGN_IN.getViewName()).addObject(
+				ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED.getMessage())); //need error message
+			// return this.buildInvalidSessionResponse();
 		} else if (!this.isElevatedUser(activeUserEntity.get())) {
-			return this.buildNoPermissionsResponse();
+			return (new ModelAndView("redirect:/" + ViewNames.MAIN_MENU.getViewName()).addObject(
+				ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED.getMessage())); //error message
+			// return this.buildNoPermissionsResponse();
+		} else {
+
 		}
 
 		// TODO: Query the employee details using the request route parameter
