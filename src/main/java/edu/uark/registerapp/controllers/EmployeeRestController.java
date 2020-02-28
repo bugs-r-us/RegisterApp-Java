@@ -1,7 +1,7 @@
 package edu.uark.registerapp.controllers;
 
 import java.util.UUID;
-
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
+import edu.uark.registerapp.commands.activeUsers.ValidateActiveUserCommand;
 import edu.uark.registerapp.commands.employees.EmployeeCreateCommand;
 import edu.uark.registerapp.commands.employees.EmployeeUpdateCommand;
 import edu.uark.registerapp.commands.exceptions.NotFoundException;
@@ -23,6 +24,8 @@ import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.ApiResponse;
 import edu.uark.registerapp.models.api.Employee;
+import edu.uark.registerapp.models.entities.ActiveUserEntity;
+import edu.uark.registerapp.models.enums.EmployeeClassification;
 
 @RestController
 @RequestMapping(value = "/api/employee")
@@ -36,27 +39,35 @@ public class EmployeeRestController extends BaseRestController {
 
 		boolean isInitialEmployee = false;
 		ApiResponse canCreateEmployeeResponse;
-
+ 
+		// final ActiveUserEntity activeUserEntity =
+		// 	this.validateActiveUserCommand.setSessionKey(request.getSession().getId())
+		// 	.execute();
 		try {
-			// idk if this goes here
-			if(!employeeCreateCommand.isInitial()) { //need another conditional
-				response.setStatus(HttpStatus.FOUND.value());
-				return(new ApiResponse())
-					.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
-						this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
-						QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+			// if employees exist and current user not elevated
+			if(!employeeCreateCommand.isInitial()) {//&& !EmployeeClassification.isElevatedUser(activeUserEntity.getClassification())) { //need another conditional
+				this.redirectUserNotElevated(request, response);
+				// ^^ idk if that is right but kinda seemed like it ?
+				// response.setStatus(HttpStatus.FOUND.value());
+				// return(new ApiResponse())
+				// 	.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
+				// 		this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
+				// 		QueryParameterMessages.NO_PERMISSIONS_TO_VIEW.getKeyAsString())));
 
 			}
-			// else if(!active user for current session) {
-			// 	response.setStatus(HttpStatus.FOUND.value());
-			// 	return(new ApiResponse())
-			// 		.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
-			// 			this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 
-			// 			QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
-			// }
+			// no active user for current session
+			if() { //validate activ euser command
+				this.redirectSessionNotActive(response);
+				// this also kinda seemed right ?
+				// response.setStatus(HttpStatus.FOUND.value());
+				// return(new ApiResponse())
+				// 	.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
+				// 		this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 
+				// 		QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+			}
 
 			// TODO: Query if any active employees exist
-
+			// somwwhere in here an employee is created
 			canCreateEmployeeResponse =
 				this.redirectUserNotElevated(request, response);
 		} catch (final NotFoundException e) {
@@ -70,7 +81,7 @@ public class EmployeeRestController extends BaseRestController {
 
 		// TODO: Create an employee;
 		final Employee createdEmployee = new Employee();
-
+		// if first employee
 		if (isInitialEmployee) {
 			createdEmployee
 				.setRedirectUrl(
@@ -78,6 +89,9 @@ public class EmployeeRestController extends BaseRestController {
 						this.buildInitialQueryParameter(
 							QueryParameterNames.EMPLOYEE_ID.getValue(),
 							createdEmployee.getEmployeeId())));
+		} else {
+			return this.employeeCreateCommand.setApiEmpoloyee(employee).execute();
+			// maybe ?
 		}
 
 		return createdEmployee.setIsInitialEmployee(isInitialEmployee);
@@ -98,6 +112,25 @@ public class EmployeeRestController extends BaseRestController {
 		}
 
 		// TODO: Update the employee
+		if() { //user not active
+			response.setStatus(HttpStatus.FOUND.value());
+			return(new ApiResponse())
+				.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
+					this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
+					QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+					// fix error message thing for all of these
+		}
+		else if() { // current user not elevated
+			response.setStatus(HttpStatus.FOUND.value());
+			return(new ApiResponse())
+				.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
+					this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
+					QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+		}
+		else {
+			return this.employeeUpdateCommand.setApiEmployee(employee).execute();
+			// this probably isnt right
+		}
 		return employee;
 	}
 
@@ -107,4 +140,7 @@ public class EmployeeRestController extends BaseRestController {
 
 	@Autowired
 	private EmployeeUpdateCommand employeeUpdateCommand;
+
+	@Autowired
+	private ValidateActiveUserCommand validateActiveUserCommand;
 }
