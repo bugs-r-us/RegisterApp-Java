@@ -1,7 +1,5 @@
 package edu.uark.registerapp.commands.employees;
 
-import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,17 +15,16 @@ import edu.uark.registerapp.models.repositories.EmployeeRepository;
 @Service
 public class ActiveEmployeeExistsQuery implements ResultCommandInterface<EmployeeSignIn> {
 
-    private Object EmployeeRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+   
 
+    //TODO: IDK WHAT TO RETURN
     @Override
     public EmployeeSignIn execute() {
 
-        boolean pplExists= ((edu.uark.registerapp.models.repositories.EmployeeRepository) this.EmployeeRepository)
-                .existsByIsActive(true);
-
-       if(pplExists)
+      if(this.employeeRepository.existsByIsActive(true))
        {
-           //WILL HAVE TO CHANGE LATER
            return new EmployeeSignIn();
            
        }else{

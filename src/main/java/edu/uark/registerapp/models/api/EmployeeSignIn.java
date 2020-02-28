@@ -5,17 +5,18 @@ import edu.uark.registerapp.models.entities.EmployeeEntity;
 public class EmployeeSignIn extends ApiResponse {
 
     //CONSTRUCTOR if they don't exist
-    public EmployeeSignIn() {
+    public EmployeeSignIn(String employeeID, String password) {
 
-		this.employeeID = this.getEmployeeID();
-		this.password = this.getPassword();
+		this.employeeID =employeeID;
+		this.password = password;
     }
-    //if they do exist
-    // public EmployeeSignIn(EmployeeEntity employeeEntity) {
+    public EmployeeSignIn()
+    {
+        this.employeeID="";
+        this.password="";
+    }
 
-	// 	this.employeeID = this.employeeEntity.getID();
-	// 	this.password = this.employeeEntity.getPassword();
-    // }
+
 
     //EMPLOYEE ID
     private String employeeID;
