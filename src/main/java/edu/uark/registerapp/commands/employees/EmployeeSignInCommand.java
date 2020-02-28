@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.transaction.TransactionScoped;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import edu.uark.registerapp.commands.exceptions.UnprocessableEntityException;
 import edu.uark.registerapp.commands.ResultCommandInterface;
 import edu.uark.registerapp.commands.exceptions.NotFoundException;
-import edu.uark.registerapp.commands.exceptions.UnauthorizedException;
 import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
@@ -31,12 +29,9 @@ public class EmployeeSignInCommand implements ResultCommandInterface<Employee> {
     public Employee execute()
     {
         this.validateProperties();
-        Employee e=this.findEmployee();
-        ActiveUserEntity activeUserEntity= this.createActiveUserEntity();
-        return this.apiEmployeeSignIn;
-
-        //public EmployeeEntity employeeEntity= this.employeeRepository.setId(this.getId());;
-
+        Employee e =this.findEmployee();
+       this.createActiveUserEntity();
+        return e;
 
 	}
 
@@ -82,11 +77,11 @@ private ActiveUserEntity createActiveUserEntity() {
     }
     else
     {
+        EmployeeEntity e = this.employeeRepository.findByEmployeeId(Integer.parseInt(this.apiEmployeeSignIn.getEmployeeID())).get();
         
-
         return this.activeUserRepository.save(
 			new ActiveUserEntity(
-                new Employee(), this.setSessionKey(this.getSessionKey())));
+                e, this.setSessionKey(this.getSessionKey())));
     }
 
 }
