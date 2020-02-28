@@ -29,6 +29,7 @@ public class EmployeeQuery implements ResultCommandInterface<Employee>{
 
     // Properties
     private UUID recordID;
+    private boolean isEmpty;
     public UUID getRecordID() {
         return this.recordID;
     }
@@ -36,7 +37,12 @@ public class EmployeeQuery implements ResultCommandInterface<Employee>{
         this.recordID = recordID;
         return this;
     }
-
+    public boolean isEREmpty() {
+        if(employeeRepository.count() == 0) {
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
     @Autowired
     private EmployeeRepository employeeRepository;
 

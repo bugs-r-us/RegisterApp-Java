@@ -13,6 +13,7 @@ import edu.uark.registerapp.commands.exceptions.ConflictException;
 import edu.uark.registerapp.commands.exceptions.UnprocessableEntityException;
 import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
+import edu.uark.registerapp.models.enums.EmployeeClassification;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
 
 @Service
@@ -21,7 +22,11 @@ public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
     public Employee execute() {
         // ?
         this.validateProperties();
-        
+
+        if(isInitial()) {
+        this.apiEmployee.setClassification(EmployeeClassification
+            .GENERAL_MANAGER.getClassification());
+        }
         final EmployeeEntity createdEmployeeEntity = this.createEmployeeEntity();
         // not sure
         this.apiEmployee.setId(createdEmployeeEntity.getId());
@@ -44,28 +49,40 @@ public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
             //not sure if right
             throw new UnprocessableEntityException("password");
         }
-        if(isInitialEmployee) { //not sure if belings here either
-            // MIGHT GO IN OWN FUNCTION..
-            //default to general manager classification
-            // that employee classification class ?
-        }
     }
 
     @Transactional 
     private EmployeeEntity createEmployeeEntity() {
+        final Optional<EmployeeEntity> queriedEmployeeEntity = 
+            this.employeeRepository
+                .findByEmployeeId(
+                    Integer.parseInt(this.apiEmployee.getEmployeeId()));
+                    //^^PROBABLY NOT RIGHT
+        // ^^ FIGURE THAT OUT
+        if(queriedEmployeeEntity.isPresent()) {
+             throw new ConflictException("employeeid");
+        }
+        // maybe check for exisiting employeeid
         //idk what else to put here yet
         return this.employeeRepository.save(
             new EmployeeEntity(apiEmployee));
     }
     //properites
     private Employee apiEmployee;
-    private boolean isInitialEmployee;
+    private boolean isInitialEmployee = false;
     public Employee getApiEmployee() {
         return this.apiEmployee;
     }
     public EmployeeCreateCommand setApiEmpoloyee(final Employee apiEmployee) {
         this.apiEmployee = apiEmployee;
         return this;
+    }
+
+    public boolean isInitial() {
+        if(employeeRepository.count() == 0) {
+            isInitialEmployee = true;
+        }
+        return isInitialEmployee;
     }
 
     @Autowired

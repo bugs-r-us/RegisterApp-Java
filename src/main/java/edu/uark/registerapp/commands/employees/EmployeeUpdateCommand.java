@@ -30,7 +30,8 @@ public class EmployeeUpdateCommand implements ResultCommandInterface<Employee> {
 
         this.apiEmployee = employeeEntity.get().synchronize(this.apiEmployee);
         this.employeeRepository.save(employeeEntity.get());
-
+        // says to return objects updated data not sure if returning
+        // entire object is correct ?
         return this.apiEmployee;
     }
 

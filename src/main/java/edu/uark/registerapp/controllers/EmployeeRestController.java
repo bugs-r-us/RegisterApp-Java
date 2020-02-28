@@ -6,14 +6,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
+import edu.uark.registerapp.commands.employees.EmployeeCreateCommand;
+import edu.uark.registerapp.commands.employees.EmployeeUpdateCommand;
 import edu.uark.registerapp.commands.exceptions.NotFoundException;
+import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
 import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.ApiResponse;
@@ -33,6 +38,23 @@ public class EmployeeRestController extends BaseRestController {
 		ApiResponse canCreateEmployeeResponse;
 
 		try {
+			// idk if this goes here
+			if(!employeeCreateCommand.isInitial()) { //need another conditional
+				response.setStatus(HttpStatus.FOUND.value());
+				return(new ApiResponse())
+					.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
+						this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
+						QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+
+			}
+			// else if(!active user for current session) {
+			// 	response.setStatus(HttpStatus.FOUND.value());
+			// 	return(new ApiResponse())
+			// 		.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
+			// 			this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 
+			// 			QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+			// }
+
 			// TODO: Query if any active employees exist
 
 			canCreateEmployeeResponse =
@@ -78,4 +100,11 @@ public class EmployeeRestController extends BaseRestController {
 		// TODO: Update the employee
 		return employee;
 	}
+
+	// Properties
+	@Autowired 
+	private EmployeeCreateCommand employeeCreateCommand;
+
+	@Autowired
+	private EmployeeUpdateCommand employeeUpdateCommand;
 }
