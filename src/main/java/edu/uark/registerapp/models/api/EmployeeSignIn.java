@@ -1,6 +1,6 @@
 package edu.uark.registerapp.models.api;
 
-import edu.uark.registerapp.models.entities.EmployeeEntity;
+
 
 public class EmployeeSignIn extends ApiResponse {
 

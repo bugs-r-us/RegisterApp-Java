@@ -2,6 +2,7 @@ package edu.uark.registerapp.commands.employees;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.TransactionScoped;
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
+import edu.uark.registerapp.models.repositories.ActiveUserRepository;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
 
 
@@ -24,28 +26,17 @@ import edu.uark.registerapp.models.repositories.EmployeeRepository;
 @Service
 public class EmployeeSignInCommand implements ResultCommandInterface<Employee> {
 
-
+//FINISH THIS
     @Override
     public Employee execute()
     {
         this.validateProperties();
-        this.findEmployee();
-
-
-        
+        Employee e=this.findEmployee();
+        ActiveUserEntity activeUserEntity= this.createActiveUserEntity();
+        return this.apiEmployeeSignIn;
 
         //public EmployeeEntity employeeEntity= this.employeeRepository.setId(this.getId());;
 
-        
-        if()
-        {
-
-        }
-        else{
-            // this.ActiveUserRepository.save(this.EmployeeEntity);
-            // this.setSessionKey(getSessionKey());
-            return new Employee();
-        }
 
 	}
 
@@ -81,6 +72,22 @@ private Employee findEmployee(){
 
 @Transactional
 private ActiveUserEntity createActiveUserEntity() {
+   Optional<ActiveUserEntity> activeUserEntity= this.activeUserRepository.findByEmployeeId(UUID.fromString(this.employeeSignin.getEmployeeID()));
+
+    
+    if(activeUserEntity != null)
+    {
+       activeUserEntity.get().setSessionKey(this.getSessionKey());
+       return this.activeUserRepository.save(activeUserEntity.get());
+    }
+    else
+    {
+        
+
+        return this.activeUserRepository.save(
+			new ActiveUserEntity(
+                new Employee(), this.setSessionKey(this.getSessionKey())));
+    }
 
 }
 
@@ -109,5 +116,6 @@ private ActiveUserEntity createActiveUserEntity() {
     
 	@Autowired
     private EmployeeRepository employeeRepository;
+    private ActiveUserRepository activeUserRepository; 
 
 }

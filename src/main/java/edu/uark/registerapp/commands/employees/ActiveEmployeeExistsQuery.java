@@ -30,9 +30,15 @@ public class ActiveEmployeeExistsQuery implements ResultCommandInterface<Employe
        }else{
         throw new NotFoundException("User");
        }
-
-       
     }
+    public boolean isPresent()
+    {
+        if(this.employeeRepository.existsByIsActive(true))
+            return true;
+        else
+            return false;
+    }
+
 
 }
 
