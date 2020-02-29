@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 	// TODO: Anything you want to do when the page is loaded?
-	console.log("ALLISON");
+	console.log("SigninJS called");
 });
 
 // function validateForm() {
