@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
 import edu.uark.registerapp.commands.activeUsers.ValidateActiveUserCommand;
+import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
 import edu.uark.registerapp.commands.employees.EmployeeCreateCommand;
+import edu.uark.registerapp.commands.employees.EmployeeQuery;
 import edu.uark.registerapp.commands.employees.EmployeeUpdateCommand;
 import edu.uark.registerapp.commands.exceptions.NotFoundException;
 import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
@@ -25,6 +27,7 @@ import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.ApiResponse;
 import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
+import edu.uark.registerapp.models.entities.EmployeeEntity;
 import edu.uark.registerapp.models.enums.EmployeeClassification;
 
 @RestController
@@ -40,9 +43,10 @@ public class EmployeeRestController extends BaseRestController {
 		boolean isInitialEmployee = false;
 		ApiResponse canCreateEmployeeResponse;
  
-		// final ActiveUserEntity activeUserEntity =
-		// 	this.validateActiveUserCommand.setSessionKey(request.getSession().getId())
-		// 	.execute();
+		final ActiveUserEntity activeUserEntity = this.validateActiveUserCommand
+		.setSessionKey(request.getSession().getId()).execute();
+
+			
 		try {
 			// if employees exist and current user not elevated
 			if(!employeeCreateCommand.isInitial()) {//&& !EmployeeClassification.isElevatedUser(activeUserEntity.getClassification())) { //need another conditional
@@ -56,7 +60,7 @@ public class EmployeeRestController extends BaseRestController {
 
 			}
 			// no active user for current session
-			if() { //validate activ euser command
+			if(activeUserEntity == null) { //validate activ euser command
 				this.redirectSessionNotActive(response);
 				// this also kinda seemed right ?
 				// response.setStatus(HttpStatus.FOUND.value());
@@ -112,7 +116,7 @@ public class EmployeeRestController extends BaseRestController {
 		}
 
 		// TODO: Update the employee
-		if() { //user not active
+		if(employee.getIsActive() == false) { //user not active
 			response.setStatus(HttpStatus.FOUND.value());
 			return(new ApiResponse())
 				.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
@@ -120,7 +124,7 @@ public class EmployeeRestController extends BaseRestController {
 					QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
 					// fix error message thing for all of these
 		}
-		else if() { // current user not elevated
+		else if(!EmployeeClassification.isElevatedUser(employee.getClassification())) { // current user not elevated
 			response.setStatus(HttpStatus.FOUND.value());
 			return(new ApiResponse())
 				.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
@@ -131,7 +135,8 @@ public class EmployeeRestController extends BaseRestController {
 			return this.employeeUpdateCommand.setApiEmployee(employee).execute();
 			// this probably isnt right
 		}
-		return employee;
+
+		// return employee;
 	}
 
 	// Properties
@@ -143,4 +148,10 @@ public class EmployeeRestController extends BaseRestController {
 
 	@Autowired
 	private ValidateActiveUserCommand validateActiveUserCommand;
+
+	@Autowired
+	private EmployeeQuery employeeQuery;
+
+	@Autowired
+	private ActiveEmployeeExistsQuery activeEmployeeExistsQuery;
 }
