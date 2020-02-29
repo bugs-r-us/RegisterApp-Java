@@ -6,7 +6,7 @@ public enum ViewModelNames {
 	IS_ELEVATED_USER("isElevatedUser"),
 	PRODUCTS("products"), // Product listing
 	PRODUCT("product"), // Product detail
-	SIGN_IN("signIn");
+	SIGN_IN("signIn"),
 	EMPLOYEE_TYPES("employeeTypes"); //idk it just didnt exist
 	
 	public String getValue() {

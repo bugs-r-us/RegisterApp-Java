@@ -92,12 +92,12 @@ public class ActiveUserEntity {
 		this.employeeId = new UUID(0, 0);
 		this.sessionKey = StringUtils.EMPTY;
 	}
-	public ActiveUserEntity(final EmployeeEntity apiEmployee, EmployeeSignInCommand  employeeSignInCommand) {
+	public ActiveUserEntity(final EmployeeEntity apiEmployee, String sessionKey) {
 		this.id = apiEmployee.getId();
 		this.classification = apiEmployee.getClassification();
 		this.name = apiEmployee.getFirstName();
 		this.employeeId = apiEmployee.getId();
-		this.sessionKey = employeeSignInCommand.getSessionKey();
+		this.sessionKey = sessionKey;
 	}
 
 	
