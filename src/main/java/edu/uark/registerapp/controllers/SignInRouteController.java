@@ -1,4 +1,5 @@
 package edu.uark.registerapp.controllers;
+
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +14,9 @@ import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
 import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
 import edu.uark.registerapp.controllers.enums.ViewNames;
+import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
+import edu.uark.registerapp.models.entities.ActiveUserEntity;
 
 @Controller
 @RequestMapping(value = "/")
@@ -42,33 +45,27 @@ public class SignInRouteController extends BaseRouteController {
 		// HttpServletRequest request
 	) 
 	{
+		try{
+		Employee employee= this.employeeSignInCommand.setapiEmployeeSignIn(employeeSignIn)
+								  .findEmployee();
+	
+		new ActiveUserEntity(employee, request.getRequestedSessionId());
+	
+		return new ModelAndView(
+			REDIRECT_PREPEND.concat(
+				ViewNames.MAIN_MENU.getRoute()));
+		}
+		catch(final Exception e)
+		{
+			//TODO: SEND BACK AN ERROR MESSAGE 	
+			return new ModelAndView(
+				REDIRECT_PREPEND.concat(
+					ViewNames.SIGN_IN.getRoute()));
+		}
 
-		EmployeeSignIn eSignIn = new EmployeeSignIn("1", "123");
-		this.employeeSignInCommand.setapiEmployeeSignIn(eSignIn).setSessionKey("aef079ab-5863-4361-9ba6-c8f1b0a60cca").execute();
-
-		// EmployeeSignIn eSignIn = new EmployeeSignIn("1", "123");
-		// this.employeeSignInCommand.setapiEmployeeSignIn(eSignIn).setSessionKey(request.getRequestedSessionId()).execute();
-
-		// this.employeeSignInCommand.setSessionKey(request.getRequestedSessionId())
-		// request.getRequestedSessionId();
-
-		ModelAndView mv = new ModelAndView(ViewModelNames.PRODUCT.getValue());
-
-		
-
-		return mv;
-
-		// TODO: Use the credentials provided in the request body
-		//  and the "id" property of the (HttpServletRequest)request.getSession() variable
-		//  to sign in the user
-
-		// return new ModelAndView(
-		// 	REDIRECT_PREPEND.concat(
-		// 		ViewNames.MAIN_MENU.getRoute()));
 	}
 	@Autowired
 	private ActiveEmployeeExistsQuery employeeQuery;
-
 	@Autowired
 	private EmployeeSignInCommand employeeSignInCommand;
 }

@@ -99,6 +99,13 @@ public class ActiveUserEntity {
 		this.employeeId = apiEmployee.getId();
 		this.sessionKey = sessionKey;
 	}
+	public ActiveUserEntity(final Employee apiEmployee, String  requestSession) {
+		this.id = apiEmployee.getId();
+		this.classification = apiEmployee.getClassification();
+		this.name = apiEmployee.getFirstName();
+		this.employeeId = apiEmployee.getId();
+		this.sessionKey = requestSession;
+	}
 
 	
 }
