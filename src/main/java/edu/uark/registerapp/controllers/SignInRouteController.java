@@ -45,21 +45,28 @@ public class SignInRouteController extends BaseRouteController {
 		HttpServletRequest request
 	) 
 	{
-
+		try{
 		Employee employee= this.employeeSignInCommand.setapiEmployeeSignIn(employeeSignIn)
 								  .findEmployee();
-
-		String sessionID= request.getRequestedSessionId();
-		new ActiveUserEntity(employee, sessionID);
+	
+		new ActiveUserEntity(employee, request.getRequestedSessionId());
 	
 		return new ModelAndView(
 			REDIRECT_PREPEND.concat(
 				ViewNames.MAIN_MENU.getRoute()));
+		}
+		catch(final Exception e)
+		{
+			//TODO: SEND BACK AN ERROR MESSAGE 	
+			return new ModelAndView(
+				REDIRECT_PREPEND.concat(
+					ViewNames.SIGN_IN.getRoute()));
+		}
 
-		
 	}
 	@Autowired
 	private ActiveEmployeeExistsQuery employeeQuery;
+	@Autowired
 	private EmployeeSignInCommand employeeSignInCommand;
 }
 
