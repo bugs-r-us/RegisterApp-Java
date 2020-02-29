@@ -48,17 +48,15 @@ public class SignInRouteController extends BaseRouteController {
 
 		Employee employee= this.employeeSignInCommand.setapiEmployeeSignIn(employeeSignIn)
 								  .findEmployee();
-		//this.employeeSignIn.getPassword();
-		//employeeSignIn.getEmployeeID();
 
-		//public ActiveUserEntity(final EmployeeEntity apiEmployee, EmployeeSignInCommand  employeeSignInCommand) {
 		String sessionID= request.getRequestedSessionId();
 		new ActiveUserEntity(employee, sessionID);
 	
-
 		return new ModelAndView(
 			REDIRECT_PREPEND.concat(
 				ViewNames.MAIN_MENU.getRoute()));
+
+		
 	}
 	@Autowired
 	private ActiveEmployeeExistsQuery employeeQuery;

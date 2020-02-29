@@ -66,9 +66,8 @@ public Employee findEmployee(){
 
 @Transactional
 private ActiveUserEntity createActiveUserEntity() {
-   Optional<ActiveUserEntity> activeUserEntity= this.activeUserRepository.findByEmployeeId(UUID.fromString(this.employeeSignin.getEmployeeID()));
+   Optional<ActiveUserEntity> activeUserEntity= this.activeUserRepository.findByEmployeeId(UUID.fromString(this.apiEmployeeSignIn.getEmployeeID()));
 
-    
     if(activeUserEntity != null)
     {
        activeUserEntity.get().setSessionKey(this.getSessionKey());
