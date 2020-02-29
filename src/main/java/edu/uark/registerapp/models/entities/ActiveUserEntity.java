@@ -14,6 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
+import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
+import edu.uark.registerapp.models.api.Employee;
+import edu.uark.registerapp.models.api.EmployeeSignIn;
+
 @Entity
 @Table(name="activeuser")
 public class ActiveUserEntity {
@@ -87,5 +91,14 @@ public class ActiveUserEntity {
 		this.name = StringUtils.EMPTY;
 		this.employeeId = new UUID(0, 0);
 		this.sessionKey = StringUtils.EMPTY;
-    }
+	}
+	public ActiveUserEntity(final EmployeeEntity apiEmployee, EmployeeSignInCommand  employeeSignInCommand) {
+		this.id = apiEmployee.getId();
+		this.classification = apiEmployee.getClassification();
+		this.name = apiEmployee.getFirstName();
+		this.employeeId = apiEmployee.getId();
+		this.sessionKey = employeeSignInCommand.getSessionKey();
+	}
+
+	
 }

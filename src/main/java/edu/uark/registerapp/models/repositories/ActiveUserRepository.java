@@ -10,4 +10,6 @@ import edu.uark.registerapp.models.entities.ActiveUserEntity;
 public interface ActiveUserRepository extends CrudRepository<ActiveUserEntity, UUID> {
 	Optional<ActiveUserEntity> findByEmployeeId(UUID employeeId);
 	Optional<ActiveUserEntity> findBySessionKey(String sessionKey);
+	
+	
 }
