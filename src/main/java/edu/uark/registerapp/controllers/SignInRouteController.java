@@ -13,6 +13,7 @@ import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
 import edu.uark.registerapp.commands.employees.EmployeeQuery;
 import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
 import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
+import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
@@ -28,7 +29,15 @@ public class SignInRouteController extends BaseRouteController {
 		{
 			ModelAndView modelAndView = new ModelAndView(ViewNames.SIGN_IN.getViewName());
 
+			// Check for error message / code
+			// This can be simplified...
 			String errorMsg = queryParameters.get(ViewModelNames.ERROR_MESSAGE.getValue());
+			if (errorMsg == null)
+				try {
+					errorMsg = QueryParameterMessages.mapMessage(Integer.parseInt(queryParameters.
+							get(QueryParameterNames.ERROR_CODE.getValue())));	
+				} catch (Exception e) { }
+		
 			modelAndView.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), errorMsg);
 			
 			return modelAndView;

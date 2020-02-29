@@ -22,6 +22,17 @@
 		</div>
 
 		<!-- TODO: Add the various action button elements -->
+
+		<button type="button">Start Transaction</button>
+        <button type="button">View Products</button>
+    
+		<!-- Only Elevated Users -->
+		<span th:if="${isElevated}">
+        <button type="button">Create Employee</button>
+        <button type="button">Sales Report</button>
+		<button type="button">Cashier Report</button>
+		</span>
+
 	</div>
 
 	<div class="hidden">
