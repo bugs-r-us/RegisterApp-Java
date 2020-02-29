@@ -4,14 +4,12 @@ package edu.uark.registerapp.commands.employees;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
 import edu.uark.registerapp.commands.ResultCommandInterface;
 import edu.uark.registerapp.commands.exceptions.NotFoundException;
-import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
-import edu.uark.registerapp.models.entities.EmployeeEntity;
 import edu.uark.registerapp.models.repositories.EmployeeRepository;
-        // TODO Auto-generated method stub
+        
+// TODO Auto-generated method stub
 @Service
 public class ActiveEmployeeExistsQuery implements ResultCommandInterface<EmployeeSignIn> {
 

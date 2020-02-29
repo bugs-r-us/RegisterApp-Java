@@ -21,12 +21,12 @@
 			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
 		</div>
 
-		<form action="/" method="POST" onsubmit="return validateForm();" class="inputContent">
+		<form action="/signIn" method="POST" onsubmit="return validateForm();" class="inputContent">
 			<!-- TODO: Form input elements: SHOULD BE DONE- AF -->
 			Enter your employeeID:
 			<input type="number" id="employeeID" name="employeeID" value="123456789"><br>
 			Enter your password:
-			<input type="text" id="employeePW" name="employeePW" value="myPassword"><br>
+			<input type="text" id="employeePW" name="password" value="myPassword"><br>
 			<br><br>
 			<input type="submit" value="Sign In">
 
