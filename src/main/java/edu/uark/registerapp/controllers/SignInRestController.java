@@ -22,7 +22,6 @@ public class SignInRestController extends BaseRestController {
 		final HttpServletRequest request
 	) {
 
-		
 	
 		this.activeUserDeleteCommand.setSessionKey(request.getSession().getId()).execute();
 		
