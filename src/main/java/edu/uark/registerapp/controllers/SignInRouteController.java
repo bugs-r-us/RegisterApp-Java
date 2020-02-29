@@ -1,4 +1,5 @@
 package edu.uark.registerapp.controllers;
+
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
+import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
+import edu.uark.registerapp.models.entities.ActiveUserEntity;
 
 @Controller
 @RequestMapping(value = "/")
@@ -42,6 +45,17 @@ public class SignInRouteController extends BaseRouteController {
 	) 
 	{
 
+		Employee employee= this.employeeSignInCommand.setapiEmployeeSignIn(employeeSignIn)
+								  .findEmployee();
+		//this.employeeSignIn.getPassword();
+		//employeeSignIn.getEmployeeID();
+		public ActiveUserEntity(final EmployeeEntity apiEmployee, EmployeeSignInCommand  employeeSignInCommand) {
+		ActiveUserEntity activeEntity = new ActiveUserEntity();
+		String sessionID= request.getRequestedSessionId();
+
+
+
+
 
 		// TODO: Use the credentials provided in the request body
 		//  and the "id" property of the (HttpServletRequest)request.getSession() variable
@@ -53,5 +67,6 @@ public class SignInRouteController extends BaseRouteController {
 	}
 	@Autowired
 	private ActiveEmployeeExistsQuery employeeQuery;
+	private EmployeeSignInCommand employeeSignInCommand;
 }
 

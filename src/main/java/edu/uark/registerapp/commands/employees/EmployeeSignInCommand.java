@@ -30,9 +30,8 @@ public class EmployeeSignInCommand implements ResultCommandInterface<Employee> {
     {
         this.validateProperties();
         Employee e =this.findEmployee();
-       this.createActiveUserEntity();
+        this.createActiveUserEntity();
         return e;
-
 	}
 
     
@@ -44,20 +43,20 @@ private void validateProperties() {
         throw new UnprocessableEntityException("Employee");
     }
 }
-private Employee findEmployee(){
+public Employee findEmployee(){
     final Optional<EmployeeEntity> queriedEmployee=
         this.employeeRepository.findByEmployeeId(Integer.parseInt(this.apiEmployeeSignIn.getEmployeeID()));
         
     boolean doesExist= this.employeeRepository.
                             existsByEmployeeId(Integer.parseInt(this.apiEmployeeSignIn.getEmployeeID()));
     
-                            //password from request and database
-    byte[] requestPW = this.employeeSignin.getPassword().getBytes();
+    //password from request and database
+    byte[] requestPW = this.apiEmployeeSignIn.getPassword().getBytes();
     boolean passwordMatch=Arrays.equals(queriedEmployee.get().getPassword(),requestPW);
         if(doesExist==true && passwordMatch)
         {
             // public Employee synchronize(final Employee apiEmployee) {
-                return new Employee(queriedEmployee.get());
+            return new Employee(queriedEmployee.get());
         }
         else
         {
@@ -88,7 +87,7 @@ private ActiveUserEntity createActiveUserEntity() {
 
 	// Properties
     private String sessionKey;
-    public EmployeeSignIn employeeSignin;
+   // public EmployeeSignIn employeeSignin;
 
     public String getSessionKey() {
 		return this.sessionKey;

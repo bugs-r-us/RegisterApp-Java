@@ -4,6 +4,7 @@ public enum QueryParameterNames {
 	NOT_DEFINED(""),
 	ERROR_CODE("errorCode");
 	
+	
 	public String getValue() {
 		return value;
 	}
