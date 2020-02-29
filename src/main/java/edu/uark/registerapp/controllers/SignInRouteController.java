@@ -14,6 +14,7 @@ import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
 import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
 import edu.uark.registerapp.controllers.enums.ViewNames;
+import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 
@@ -49,17 +50,11 @@ public class SignInRouteController extends BaseRouteController {
 								  .findEmployee();
 		//this.employeeSignIn.getPassword();
 		//employeeSignIn.getEmployeeID();
-		public ActiveUserEntity(final EmployeeEntity apiEmployee, EmployeeSignInCommand  employeeSignInCommand) {
-		ActiveUserEntity activeEntity = new ActiveUserEntity();
+
+		//public ActiveUserEntity(final EmployeeEntity apiEmployee, EmployeeSignInCommand  employeeSignInCommand) {
 		String sessionID= request.getRequestedSessionId();
-
-
-
-
-
-		// TODO: Use the credentials provided in the request body
-		//  and the "id" property of the (HttpServletRequest)request.getSession() variable
-		//  to sign in the user
+		new ActiveUserEntity(employee, sessionID);
+	
 
 		return new ModelAndView(
 			REDIRECT_PREPEND.concat(
