@@ -65,7 +65,7 @@ public class EmployeeSignInCommand implements ResultCommandInterface<Employee> {
         EmployeeEntity employeeEntity = this.employeeRepository.findByEmployeeId(Integer.parseInt(this.apiEmployeeSignIn.getEmployeeID())).get();
         Optional<ActiveUserEntity> activeUserEntity = this.activeUserRepository.findByEmployeeId(employeeEntity.getId());
 
-        if(activeUserEntity.isEmpty() == false){
+        if(activeUserEntity.isPresent() == true){
             activeUserEntity.get().setSessionKey(this.getSessionKey());
             return this.activeUserRepository.save(activeUserEntity.get());
         }else{

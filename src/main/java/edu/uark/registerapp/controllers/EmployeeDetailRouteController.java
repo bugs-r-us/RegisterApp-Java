@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import edu.uark.registerapp.models.api.Employee;
 
 import edu.uark.registerapp.commands.employees.EmployeeQuery;
 import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
@@ -31,13 +32,16 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		ModelAndView modelAndView;
 		final Optional<ActiveUserEntity> activeUserEntity =
 			this.getCurrentUser(request);
+
 			// might need something else here..
 		if(this.isElevatedUser(activeUserEntity.get()) || this.employeeQuery.isEREmpty()) {
-			modelAndView = new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()); 
+			modelAndView = new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName())
+				.addObject(ViewModelNames.EMPLOYEE.getValue(), new Employee());
 			//not sure if right
 		}
+		// no active user for current session
 		else if(!activeUserEntity.isPresent()) {
-			modelAndView = new ModelAndView("redirect:/" + ViewNames.PRODUCT_DETAIL.getViewName())
+			modelAndView = new ModelAndView("redirect:/" + ViewNames.SIGN_IN.getViewName())
 				.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED
 					.getMessage()); //not sure how correct this is..
 		}
@@ -63,17 +67,12 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 			this.getCurrentUser(request);
 
 		if (!activeUserEntity.isPresent()) {
-			modelAndView = new ModelAndView("redirect:/" + ViewNames.SIGN_IN.getViewName())
-				.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED
-					.getMessage());
-			// return this.buildInvalidSessionResponse();
+			return this.buildInvalidSessionResponse();
 		} else if (!this.isElevatedUser(activeUserEntity.get())) {
-			modelAndView = new ModelAndView("redirect:/" + ViewNames.MAIN_MENU.getViewName()).addObject(
-				ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED.getMessage()); //error message
-			// return this.buildNoPermissionsResponse();
+			return this.buildNoPermissionsResponse();
 		} else { //add try catch stuff
 			modelAndView = new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()).addObject(
-				ViewModelNames.EMPLOYEE_TYPES.getValue(), this.employeeQuery
+				ViewModelNames.EMPLOYEE.getValue(), this.employeeQuery
 					.setRecordID(employeeId).execute());
 		}
 		// TODO: Query the employee details using the request route parameter

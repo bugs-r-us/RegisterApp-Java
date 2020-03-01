@@ -49,25 +49,23 @@ public class EmployeeRestController extends BaseRestController {
 			
 		try {
 			// if employees exist and current user not elevated
-			if(!employeeCreateCommand.isInitial()) {//&& !EmployeeClassification.isElevatedUser(activeUserEntity.getClassification())) { //need another conditional
-				this.redirectUserNotElevated(request, response);
-				// ^^ idk if that is right but kinda seemed like it ?
-				// response.setStatus(HttpStatus.FOUND.value());
-				// return(new ApiResponse())
-				// 	.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
-				// 		this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
-				// 		QueryParameterMessages.NO_PERMISSIONS_TO_VIEW.getKeyAsString())));
+			if(!employeeCreateCommand.isInitial() && EmployeeClassification.isElevatedUser(employee.getClassification())) {
+				response.setStatus(HttpStatus.FOUND.value());
+				return(new ApiResponse())
+					.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
+						this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
+						QueryParameterMessages.NO_PERMISSIONS_TO_VIEW.getKeyAsString())));
 
 			}
 			// no active user for current session
 			if(activeUserEntity == null) { //validate activ euser command
-				this.redirectSessionNotActive(response);
+				// this.redirectSessionNotActive(response);
 				// this also kinda seemed right ?
-				// response.setStatus(HttpStatus.FOUND.value());
-				// return(new ApiResponse())
-				// 	.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
-				// 		this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 
-				// 		QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+				response.setStatus(HttpStatus.FOUND.value());
+				return(new ApiResponse())
+					.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
+						this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 
+						QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
 			}
 
 			// TODO: Query if any active employees exist
@@ -79,7 +77,7 @@ public class EmployeeRestController extends BaseRestController {
 			canCreateEmployeeResponse = new ApiResponse();
 		}
 
-		if (!canCreateEmployeeResponse.getRedirectUrl().equals(StringUtils.EMPTY)) {
+		if (!canCreateEmployeeResponse.getRedirectUrl().equals(StringUtils.EMPTY)) { 
 			return canCreateEmployeeResponse;
 		}
 
@@ -116,7 +114,9 @@ public class EmployeeRestController extends BaseRestController {
 		}
 
 		// TODO: Update the employee
-		if(employee.getIsActive() == false) { //user not active
+		// not an active user for the session
+		// try catch method for 
+		if(employee.getIsActive() == false) {
 			response.setStatus(HttpStatus.FOUND.value());
 			return(new ApiResponse())
 				.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
