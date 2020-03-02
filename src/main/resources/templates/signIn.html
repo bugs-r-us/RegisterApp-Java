@@ -22,14 +22,23 @@
 		</div>
 
 		<form action="/signIn" method="POST" onsubmit="return validateForm();" class="inputContent">
-			<!-- TODO: Form input elements: SHOULD BE DONE- AF -->
-			Enter your employeeID:
-			<input type="text" id="employeeID" name="employeeID" th:value="${employeeId}"><br>
-			Enter your password:
-			<input type="password" id="employeePW" name="password" value=""><br>
-			<br><br>
-			<input type="submit" value="Sign In">
-
+			<table id="employeeDetails">
+				<tbody>
+					<tr>
+						<td class="label">Employee ID:</td>
+						<td>
+							<input type="text" id="employeeID" name="employeeID" th:value="${employeeId}" class="update" >
+						</td>
+					</tr>
+					<tr>
+						<td class="label">Employee ID:</td>
+						<td>
+							<input type="password" id="employeePW" name="password" value="" class="update" >
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<button value="Sign In" type="submit" class="action">Sign In</button>
 		</form>
 	</div>
 		
