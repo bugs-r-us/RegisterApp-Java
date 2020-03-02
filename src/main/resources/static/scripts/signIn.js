@@ -13,11 +13,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function validateForm() {
 
     var employeeID = document.getElementById("employeeID").value;
-    var password = document.getElementById.apply("password").value;
-    if(employeeID == '' || typeof employeeID != "number") { 
+    var password = document.getElementById("employeePW").value;
+    if(employeeID == '' || isNaN(employeeID)) { 
+        displayError("Please provide a valid employee ID");
         return false;
     }
     if(password == '') {
+        displayError("Please provide a valid password");
         return false;
     }
     // TODO: Validate the user input

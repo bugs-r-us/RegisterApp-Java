@@ -24,9 +24,9 @@
 		<form action="/signIn" method="POST" onsubmit="return validateForm();" class="inputContent">
 			<!-- TODO: Form input elements: SHOULD BE DONE- AF -->
 			Enter your employeeID:
-			<input type="number" id="employeeID" name="employeeID" value=""><br>
+			<input type="text" id="employeeID" name="employeeID" th:value="${employeeId}"><br>
 			Enter your password:
-			<input type="text" id="employeePW" name="password" value=""><br>
+			<input type="password" id="employeePW" name="password" value=""><br>
 			<br><br>
 			<input type="submit" value="Sign In">
 
