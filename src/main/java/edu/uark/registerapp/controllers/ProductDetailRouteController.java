@@ -43,6 +43,8 @@ public class ProductDetailRouteController extends BaseRouteController{
 
 		if (EmployeeClassification.isElevatedUser(activeUserEntity.get().getClassification())){
 				modelAndView.addObject("isElevated", true);
+		}else{
+			modelAndView.addObject("isElevated", false);
 		}
 
 		try {
