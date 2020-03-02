@@ -29,6 +29,8 @@ import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.entities.EmployeeEntity;
 import edu.uark.registerapp.models.enums.EmployeeClassification;
+import edu.uark.registerapp.models.repositories.ActiveUserRepository;
+import edu.uark.registerapp.models.repositories.EmployeeRepository;
 
 @RestController
 @RequestMapping(value = "/api/employee")
@@ -40,63 +42,126 @@ public class EmployeeRestController extends BaseRestController {
 		final HttpServletResponse response
 	) {
 
-		boolean isInitialEmployee = false;
+		boolean isInitialEmployee = employeeRepository.existsByIsActive(true);
 		ApiResponse canCreateEmployeeResponse;
- 
-		final ActiveUserEntity activeUserEntity = this.validateActiveUserCommand
-		.setSessionKey(request.getSession().getId()).execute();
 
-			
-		try {
-			// if employees exist and current user not elevated
-			if(!employeeCreateCommand.isInitial() && EmployeeClassification.isElevatedUser(employee.getClassification())) {
-				response.setStatus(HttpStatus.FOUND.value());
-				return(new ApiResponse())
-					.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
-						this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
-						QueryParameterMessages.NO_PERMISSIONS_TO_VIEW.getKeyAsString())));
+		// there are users
+		if(isInitialEmployee){
+			try {
+				// get active user
+				final Optional<ActiveUserEntity> activeUserEntity = activeUserRepository.findBySessionKey(request.getSession().getId());
 
-			}
-			// no active user for current session
-			if(activeUserEntity == null) { //validate activ euser command
-				// this.redirectSessionNotActive(response);
-				// this also kinda seemed right ?
-				response.setStatus(HttpStatus.FOUND.value());
-				return(new ApiResponse())
+				// not an active user
+				if (activeUserEntity == null){
+					response.setStatus(HttpStatus.FOUND.value());
+					return(new ApiResponse())
 					.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
 						this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 
-						QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+						QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));	
+				}
+				// is active user
+				else {
+					if (!EmployeeClassification.isElevatedUser(activeUserEntity.get().getClassification())){
+						response.setStatus(HttpStatus.FOUND.value());
+						return(new ApiResponse())
+							.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
+								this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
+								QueryParameterMessages.NO_PERMISSIONS_TO_VIEW.getKeyAsString())));
+					}
+					// not init 
+					else{
+						final Employee createdEmployee = this.employeeCreateCommand.setApiEmpoloyee(employee).execute();
+						
+						createdEmployee
+						.setRedirectUrl(
+							ViewNames.EMPLOYEE_DETAIL.getRoute().concat("/" + createdEmployee.getId().toString()));
+
+						return createdEmployee.setIsInitialEmployee(isInitialEmployee);
+					}
+				}
+				// canCreateEmployeeResponse =
+				// 	this.redirectUserNotElevated(request, response);
+			} catch (final NotFoundException e) {
+				isInitialEmployee = true;
+				canCreateEmployeeResponse = new ApiResponse();
 			}
 
-			// TODO: Query if any active employees exist
-			// somwwhere in here an employee is created
-			canCreateEmployeeResponse =
-				this.redirectUserNotElevated(request, response);
-		} catch (final NotFoundException e) {
-			isInitialEmployee = true;
-			canCreateEmployeeResponse = new ApiResponse();
 		}
 
-		if (!canCreateEmployeeResponse.getRedirectUrl().equals(StringUtils.EMPTY)) { 
-			return canCreateEmployeeResponse;
-		}
+		// if (!canCreateEmployeeResponse.getRedirectUrl().equals(StringUtils.EMPTY)) {
+		// 	return canCreateEmployeeResponse;
+		// }
 
 		// TODO: Create an employee;
-		final Employee createdEmployee = new Employee();
-		// if first employee
-		if (isInitialEmployee) {
-			createdEmployee
+		final Employee createdEmployee = this.employeeCreateCommand.setApiEmpoloyee(employee).execute();;
+		
+		createdEmployee
 				.setRedirectUrl(
 					ViewNames.SIGN_IN.getRoute().concat(
 						this.buildInitialQueryParameter(
 							QueryParameterNames.EMPLOYEE_ID.getValue(),
 							createdEmployee.getEmployeeId())));
-		} else {
-			return this.employeeCreateCommand.setApiEmpoloyee(employee).execute();
-			// maybe ?
-		}
 
 		return createdEmployee.setIsInitialEmployee(isInitialEmployee);
+
+
+		// boolean isInitialEmployee = false;
+		// ApiResponse canCreateEmployeeResponse;
+ 
+		// final ActiveUserEntity activeUserEntity = this.validateActiveUserCommand
+		// .setSessionKey(request.getSession().getId()).execute();
+
+			
+		// try {
+		// 	// if employees exist and current user not elevated
+		// 	if(!employeeCreateCommand.isInitial() && EmployeeClassification.isElevatedUser(employee.getClassification())) {
+		// 		response.setStatus(HttpStatus.FOUND.value());
+		// 		return(new ApiResponse())
+		// 			.setRedirectUrl(ViewNames.MAIN_MENU.getRoute().concat(
+		// 				this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(),
+		// 				QueryParameterMessages.NO_PERMISSIONS_TO_VIEW.getKeyAsString())));
+
+		// 	}
+		// 	// no active user for current session
+		// 	if(activeUserEntity == null) { //validate activ euser command
+		// 		// this.redirectSessionNotActive(response);
+		// 		// this also kinda seemed right ?
+		// 		response.setStatus(HttpStatus.FOUND.value());
+		// 		return(new ApiResponse())
+		// 			.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
+		// 				this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 
+		// 				QueryParameterMessages.SESSION_NOT_ACTIVE.getKeyAsString())));
+		// 	}
+
+		// 	// TODO: Query if any active employees exist
+		// 	// somwwhere in here an employee is created
+		// 	canCreateEmployeeResponse =
+		// 		this.redirectUserNotElevated(request, response);
+		// } catch (final NotFoundException e) {
+		// 	isInitialEmployee = true;
+		// 	canCreateEmployeeResponse = new ApiResponse();
+		// }
+
+		// if (!canCreateEmployeeResponse.getRedirectUrl().equals(StringUtils.EMPTY)) { 
+		// 	return canCreateEmployeeResponse;
+		// }
+
+		// // TODO: Create an employee;
+		// final Employee createdEmployee = new Employee();
+		// // if first employee
+		// if (isInitialEmployee) {
+		// 	createdEmployee
+		// 		.setRedirectUrl(
+		// 			ViewNames.SIGN_IN.getRoute().concat(
+		// 				this.buildInitialQueryParameter(
+		// 					QueryParameterNames.EMPLOYEE_ID.getValue(),
+		// 					createdEmployee.getEmployeeId())));
+		// } else {
+		// 	return this.employeeCreateCommand.setApiEmpoloyee(employee).execute();
+		// 	// maybe ?
+		// }
+
+		// return createdEmployee.setIsInitialEmployee(isInitialEmployee);
 	}
 
 	@RequestMapping(value = "/{employeeId}", method = RequestMethod.PATCH)
@@ -154,4 +219,10 @@ public class EmployeeRestController extends BaseRestController {
 
 	@Autowired
 	private ActiveEmployeeExistsQuery activeEmployeeExistsQuery;
+
+	@Autowired
+	private ActiveUserRepository activeUserRepository;
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
 }

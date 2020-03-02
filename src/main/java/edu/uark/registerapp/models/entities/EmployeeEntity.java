@@ -151,7 +151,7 @@ public class EmployeeEntity {
 	}
 
 	public EmployeeEntity(final Employee apiEmployee) {
-    	this.id = new UUID(0, 0);
+		this.id = new UUID(0, 0);
 		this.isActive = apiEmployee.getIsActive();
 		this.lastName = apiEmployee.getLastName();
 		this.firstName = apiEmployee.getFirstName();

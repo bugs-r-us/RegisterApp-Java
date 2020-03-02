@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="stylesheet" type="text/css" href="/styles/master.css">
+	<link rel="stylesheet" type="text/css" href="/styles/employeeDetail.css">
 
 	<script type="text/javascript" src="/scripts/master.js" defer></script>
 	<script type="text/javascript" src="/scripts/employeeDetail.js" defer></script>
@@ -37,14 +38,47 @@
 						</td>
 					</tr>
 					<tr th:class="${employee.isEmpty} ? hidden : ''">
-						<td class="label">Employee ID:</td>
-						<td>
-							<input id="employeeEmployeeId" type="text" th:value="${!employee.isEmpty} ? ${employee.employeeId} : ''" class="update" disabled />
+						<td>Employee ID:</td>
+						<td class="label">
+							<input id="employeeId" type="text" th:value="${!employee.isEmpty} ? ${employee.employeeId} : ''" class="update" disabled />
 						</td>
 					</tr>
-					<!-- TODO: Other employee inputs -->
+					<tr>
+						<td class="label">First Name:</td>
+						<td>
+							<input id="employeeFirstName" type="text" th:value="${!employee.isEmpty} ? ${employee.firstName} : ''" class="update" />
+						</td>
+					</tr>
+					<tr>
+						<td class="label">Last Name:</td>
+						<td>
+							<input id="employeeLastName" type="text" th:value="${!employee.isEmpty} ? ${employee.lastName} : ''" class="update" />
+						</td>
+					</tr>
+					<tr>
+						<td class="label">Password:</td>
+						<td>
+							<input id="employeePassword" type="password" th:value="${!employee.isEmpty} ? ${employee.password} : ''" class="update" />
+						</td>
+					</tr>
+					<tr>
+						<td class="label">Confirm Password:</td>
+						<td>
+							<input id="employeeConfirmPassword" type="password" th:value="${!employee.isEmpty} ? ${employee.password} : ''" class="update" />
+						</td>
+					</tr>
+
+					<td class="label">Employee Type:</td>
+						<td>
+							<select id="type">
+                				<option value="101">Cashier</option>
+                				<option value="501">Shift Manager</option>
+                				<option value="701">General Manager</option>
+              				</select>
+						</td>
 				</tbody>
 			</table>
+			<button id="saveButton" action="PUT" type="button" class="action">Save</button>
 		</div>
 
 		<!-- TODO: An action element to initiate a save -->

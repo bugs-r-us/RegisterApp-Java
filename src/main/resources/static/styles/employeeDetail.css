@@ -1,0 +1,12 @@
+.employeeDetailWrapper {
+	display: inline-block;
+}
+
+select {
+	border: solid;
+	line-height: 1.75em;
+	width: calc(100% - 6px);
+	background-color: #FFFFFF;
+	font-size: 16px;
+	padding: 0em .25em 0em .25em;
+}

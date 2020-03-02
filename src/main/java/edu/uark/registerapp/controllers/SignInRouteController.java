@@ -17,6 +17,7 @@ import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
+import edu.uark.registerapp.models.api.Employee;
 
 @Controller
 @RequestMapping(value = "/")
@@ -28,6 +29,13 @@ public class SignInRouteController extends BaseRouteController {
 		if(this.activeEmployeeExistsQuery.isPresent())
 		{
 			ModelAndView modelAndView = new ModelAndView(ViewNames.SIGN_IN.getViewName());
+
+			String employeeId = queryParameters.get("employeeId");
+			if (employeeId != null){
+				//http://localhost:8080/?employeeId=00582 figure out
+
+				modelAndView.addObject("employeeId", employeeId);
+			}
 
 			// Check for error message / code
 			// This can be simplified...
@@ -44,7 +52,8 @@ public class SignInRouteController extends BaseRouteController {
 		}
 		else
 		{
-			ModelAndView modelAndView = new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName());
+			 ModelAndView modelAndView = new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName())
+				.addObject(ViewModelNames.EMPLOYEE.getValue(), new Employee());
 			return modelAndView;
 		}
 		

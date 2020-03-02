@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import edu.uark.registerapp.models.api.Employee;
-
+import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
 import edu.uark.registerapp.commands.employees.EmployeeQuery;
 import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
@@ -33,17 +33,22 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 		final Optional<ActiveUserEntity> activeUserEntity =
 			this.getCurrentUser(request);
 
-			// might need something else here..
-		if(this.isElevatedUser(activeUserEntity.get()) || this.employeeQuery.isEREmpty()) {
+
+			boolean isElevated = false;
+			try{
+				isElevated = this.isElevatedUser(activeUserEntity.get());
+			}catch(Exception exception){
+				isElevated = false;
+			}
+
+		if( isElevated || !activeUserExists()) {
 			modelAndView = new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName())
 				.addObject(ViewModelNames.EMPLOYEE.getValue(), new Employee());
 			//not sure if right
 		}
 		// no active user for current session
 		else if(!activeUserEntity.isPresent()) {
-			modelAndView = new ModelAndView("redirect:/" + ViewNames.SIGN_IN.getViewName())
-				.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NOT_DEFINED
-					.getMessage()); //not sure how correct this is..
+			return this.buildInvalidSessionResponse();
 		}
 		else {
 			modelAndView = new ModelAndView("redirect:/" + ViewNames.MAIN_MENU.getViewName())
@@ -68,12 +73,15 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 
 		if (!activeUserEntity.isPresent()) {
 			return this.buildInvalidSessionResponse();
+
 		} else if (!this.isElevatedUser(activeUserEntity.get())) {
 			return this.buildNoPermissionsResponse();
+			
 		} else { //add try catch stuff
+			Employee e = this.employeeQuery.setRecordID(employeeId).execute();
+
 			modelAndView = new ModelAndView(ViewNames.EMPLOYEE_DETAIL.getViewName()).addObject(
-				ViewModelNames.EMPLOYEE.getValue(), this.employeeQuery
-					.setRecordID(employeeId).execute());
+				ViewModelNames.EMPLOYEE.getValue(), e);
 		}
 		// TODO: Query the employee details using the request route parameter
 		// TODO: Serve up the page
@@ -83,10 +91,13 @@ public class EmployeeDetailRouteController extends BaseRouteController {
 
 	// Helper methods
 	private boolean activeUserExists() {
-		// TODO: Helper method to determine if any active users Exist
-		return true;
+		return this.activeEmployeeExistsQuery.isPresent();
 	}
+	
 	// Properties
 	@Autowired
 	private EmployeeQuery employeeQuery;
+
+	@Autowired
+	private ActiveEmployeeExistsQuery activeEmployeeExistsQuery;
 }

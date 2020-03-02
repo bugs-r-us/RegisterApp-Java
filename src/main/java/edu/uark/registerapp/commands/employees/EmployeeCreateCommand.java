@@ -20,7 +20,6 @@ import edu.uark.registerapp.models.repositories.EmployeeRepository;
 public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
     @Override
     public Employee execute() {
-        // ?
         this.validateProperties();
 
         if(isInitial()) {
@@ -29,10 +28,10 @@ public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
         }
         final EmployeeEntity createdEmployeeEntity = this.createEmployeeEntity();
         // not sure
-        this.apiEmployee.setId(createdEmployeeEntity.getId());
-        this.apiEmployee.setCreatedOn(createdEmployeeEntity.getCreatedOn());
+        // this.apiEmployee.setId(createdEmployeeEntity.getId());
+        // this.apiEmployee.setCreatedOn(createdEmployeeEntity.getCreatedOn());
         
-        return this.apiEmployee;
+        return new Employee(createdEmployeeEntity);
     }
 
     //helper ?
@@ -53,23 +52,16 @@ public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
 
     @Transactional 
     private EmployeeEntity createEmployeeEntity() {
-        final Optional<EmployeeEntity> queriedEmployeeEntity = 
-            this.employeeRepository
-                .findByEmployeeId(
-                    Integer.parseInt(this.apiEmployee.getEmployeeId()));
-                    //^^PROBABLY NOT RIGHT
-        // ^^ FIGURE THAT OUT
-        if(queriedEmployeeEntity.isPresent()) {
-             throw new ConflictException("employeeid");
-        }
-        // maybe check for exisiting employeeid
-        //idk what else to put here yet
+        byte[] password = this.apiEmployee.getPassword().getBytes();
+    
+        EmployeeEntity eE = new EmployeeEntity(apiEmployee);
+        eE.setPassword(password);
+
         return this.employeeRepository.save(
-            new EmployeeEntity(apiEmployee));
+            eE);
     }
     //properites
     private Employee apiEmployee;
-    private boolean isInitialEmployee = false;
     public Employee getApiEmployee() {
         return this.apiEmployee;
     }
@@ -79,10 +71,10 @@ public class EmployeeCreateCommand implements ResultCommandInterface<Employee> {
     }
 
     public boolean isInitial() {
-        if(employeeRepository.count() == 0) {
-            isInitialEmployee = true;
+        if(!employeeRepository.existsByIsActive(true)) {
+            return true;
         }
-        return isInitialEmployee;
+        return false;
     }
 
     @Autowired
