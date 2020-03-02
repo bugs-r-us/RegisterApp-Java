@@ -1,5 +1,9 @@
 package edu.uark.registerapp.controllers;
+import java.util.Optional;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,12 +15,14 @@ import edu.uark.registerapp.commands.products.ProductQuery;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.Product;
+import edu.uark.registerapp.models.entities.ActiveUserEntity;
+import edu.uark.registerapp.models.enums.EmployeeClassification;
 
 @Controller
 @RequestMapping(value = "/productDetail")
 
 
-public class ProductDetailRouteController {
+public class ProductDetailRouteController extends BaseRouteController{
 	//START
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView start() {
@@ -28,9 +34,16 @@ public class ProductDetailRouteController {
 
 	//GET PRODUCR ID
 	@RequestMapping(value = "/{productId}", method = RequestMethod.GET)
-	public ModelAndView startWithProduct(@PathVariable final UUID productId) {
+	public ModelAndView startWithProduct(@PathVariable final UUID productId, final HttpServletRequest request) {
+
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+
 		final ModelAndView modelAndView =
 			new ModelAndView(ViewNames.PRODUCT_DETAIL.getViewName());
+
+		if (EmployeeClassification.isElevatedUser(activeUserEntity.get().getClassification())){
+				modelAndView.addObject("isElevated", true);
+		}
 
 		try {
 			modelAndView.addObject(

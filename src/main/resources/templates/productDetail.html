@@ -47,6 +47,7 @@
 			</table>
 		</div>
 
+		<span th:if="${isElevated}">
 		<div class="productActionsWrapper">
 			<br />
 			<div id="deleteActionContainer" th:class="${product.isEmpty} ? hidden : ''">
@@ -56,6 +57,7 @@
 			</div>
 			<button id="saveButton" type="button" class="action">Save</button>
 		</div>
+		</span>
 
 		<div id="productSavedAlertModal" class="modal animate-opacity-show">
 			<div class="modal-content">
