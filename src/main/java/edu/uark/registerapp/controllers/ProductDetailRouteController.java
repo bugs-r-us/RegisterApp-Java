@@ -25,11 +25,23 @@ import edu.uark.registerapp.models.enums.EmployeeClassification;
 public class ProductDetailRouteController extends BaseRouteController{
 	//START
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView start() {
-		return (new ModelAndView(ViewNames.PRODUCT_DETAIL.getViewName()))
-			.addObject(
-				ViewModelNames.PRODUCT.getValue(),
-				(new Product()).setLookupCode(StringUtils.EMPTY).setCount(0));
+	public ModelAndView start(final HttpServletRequest request) {
+		final ModelAndView modelAndView =
+			new ModelAndView(ViewNames.PRODUCT_DETAIL.getViewName());
+
+		modelAndView.addObject(
+			ViewModelNames.PRODUCT.getValue(),
+			(new Product()).setLookupCode(StringUtils.EMPTY).setCount(0));
+		
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+
+		if (EmployeeClassification.isElevatedUser(activeUserEntity.get().getClassification())){
+			modelAndView.addObject("isElevated", true);
+		}else{
+			modelAndView.addObject("isElevated", false);
+		}
+
+		return modelAndView;
 	}
 
 	//GET PRODUCR ID
