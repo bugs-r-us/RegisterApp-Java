@@ -1,53 +1,61 @@
 <html xmlns:th="https://www.thymeleaf.org">
 
 <head>
-	<title>Register - Product</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>Register - Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" type="text/css" href="/styles/master.css">
-	<link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
+    <link rel="stylesheet" type="text/css" href="/styles/master.css">
+    <link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
 
-	<script type="text/javascript" src="/scripts/master.js" defer></script>
-	<script type="text/javascript" src="/scripts/productDetail.js" defer></script>
+    <script type="text/javascript" src="/scripts/master.js" defer></script>
+    <script type="text/javascript" src="/scripts/productDetail.js" defer></script>
 </head>
 
 <body>
 
-	<div class="header">
-		<h1 class="primary-message">Product Detail</h1>
-	</div>
-		
-	<div id="main" class="main">
-		<div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
-			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
-		</div>
+    <div class="header">
+        <h1 class="primary-message">Product Detail</h1>
+    </div>
 
-		<div class="productDetailWrapper">
-			<table id="productDetails">
-				<tbody>
-					<tr class="hidden">
-						<td>ID:</td>
-						<td>
-							<input id="productId" type="hidden" th:value="${!product.isEmpty} ? ${product.id} : ''" />
-						</td>
-					</tr>
-					<tr>
-						<td class="label">Lookup Code:</td>
-						<td>
-							<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:disabled="${!isElevated}"/>
-						</td>
-					</tr>
-					<tr>
-						<td class="label">Count:</td>
-						<td>
-							<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:disabled="${!isElevated}" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+    <div id="main" class="main">
+        <div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
+            <h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
+        </div>
 
-		<span th:if="${isElevated}">
+        <div class="productDetailWrapper">
+            <table id="productDetails">
+                <tbody>
+                    <tr class="hidden">
+                        <td>ID:</td>
+                        <td>
+                            <input id="productId" type="hidden" th:value="${!product.isEmpty} ? ${product.id} : ''" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Lookup Code:</td>
+                        <td>
+                            <input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:disabled="${!isElevated}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Count:</td>
+                        <td>
+                            <input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:disabled="${!isElevated}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <span th:if=${!product.isEmpty}>
+			<form>
+
+			</form>
+			<button id="addButton" type="button" class="action">Add</button>
+		</span>
+
+
+        <span th:if="${isElevated}">
 		<div class="productActionsWrapper">
 			<br />
 			<div id="deleteActionContainer" th:class="${product.isEmpty} ? hidden : ''">
@@ -59,18 +67,18 @@
 		</div>
 		</span>
 
-		<div id="productSavedAlertModal" class="modal animate-opacity-show">
-			<div class="modal-content">
-				<div class="container gray-blue">
-					<h1>
-						<span>Product</span><br />
-						<span>Saved</span>
-					</h1>
-				</div>
-			</div>
-		</div>
-	</div>
-		
+        <div id="productSavedAlertModal" class="modal animate-opacity-show">
+            <div class="modal-content">
+                <div class="container gray-blue">
+                    <h1>
+                        <span>Product</span><br />
+                        <span>Saved</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
