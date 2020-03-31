@@ -61,11 +61,14 @@ public class Product extends ApiResponse {
 	public Product() {
 		super();
 
-		this.count = -1;
+		//set by db, so  entity sets these
 		this.id = new UUID(0, 0);
+		this.setCreatedOn(LocalDateTime.now());
+
+		this.count = -1;
 		this.lookupCode = StringUtils.EMPTY;
 
-		this.setCreatedOn(LocalDateTime.now());
+		
 	}
 
 	public Product(final ProductEntity productEntity) {
@@ -78,3 +81,4 @@ public class Product extends ApiResponse {
 		this.setCreatedOn(productEntity.getCreatedOn());
 	}
 }
+
