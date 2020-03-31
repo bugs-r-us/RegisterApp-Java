@@ -80,9 +80,25 @@ function saveActionClick(event) {
     }
 };
 
-// function validateAdd() {
+// maybe need a saveAddClick() function
 
-// }
+function validateAdd() {
+    // needs to be changed i think to make sure it matches an existing product
+    const lookupCode = getPrdouctLookupCode();
+    if ((lookupCode == null) || (lookupCode.trim() === "")) {
+        displayError("Please provide a valid lookup code.")
+        return false;
+    }
+    const count = getProductCount();
+    if ((count == null) || isNaN(count)) {
+        displayError("Please provide a valid product count.");
+        return false;
+    } else if (count < 0) {
+        displayError("Product count may not be negative.");
+        return false;
+    }
+    return true;
+}
 
 function validateSave() {
     const lookupCode = getProductLookupCode();
