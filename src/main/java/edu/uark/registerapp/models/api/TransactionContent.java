@@ -108,7 +108,7 @@ public class TransactionContent extends ApiResponse {
         super(false);
         
         this.id=TransactionContentEntity.getID();
-        this.transactionid=TransactionContentEntity.getTransactionID();
+        this.transactionid=TransactionContentEntity.getTransactionId();
         this.productid= TransactionContentEntity.getProductID();
         this.quantity=TransactionContentEntity.getQuantity();
         this.price=TransactionContentEntity.getPrice();
