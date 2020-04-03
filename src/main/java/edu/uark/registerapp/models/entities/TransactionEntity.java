@@ -29,14 +29,14 @@ public class TransactionEntity {
 	}
 
 	@Column(name = "employeeid")
-	private UUID employeeID;
+	private UUID employeeId;
 
-	public UUID getEmployeeID() {
-		return this.employeeID;
+	public UUID getEmployeeId() {
+		return this.employeeId;
 	}
 
-	public TransactionEntity setEmployeeID(final UUID employeeID) {
-		this.employeeID = employeeID;
+	public TransactionEntity setEmployeeId(final UUID employeeId) {
+		this.employeeId = employeeId;
 		return this;
 	}
 
@@ -75,7 +75,7 @@ public class TransactionEntity {
 	}
 
 	public Transaction synchronize(final Transaction apiTransaction) {
-		this.setEmployeeID(apiTransaction.getEmployeeId());
+		this.setEmployeeId(apiTransaction.getEmployeeId());
 		this.setTotal(apiTransaction.getTotal());
 		this.settransactionstatus(apiTransaction.gettransactionstatus());
 
@@ -88,7 +88,7 @@ public class TransactionEntity {
 
 	public TransactionEntity() {
 		this.id =new UUID(0, 0);
-		this.employeeID = new UUID(0, 0);
+		this.employeeId = new UUID(0, 0);
         this.total = 0;
 		this.transactionstatus = 0;
 		this.createdOn=getCreatedOn();
