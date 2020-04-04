@@ -109,6 +109,5 @@ public class TransactionContentEntity {
 	}
 
 	//WE CAN  MAKE MORE BASED ON WHAT WE NEED
-
 	
 }
