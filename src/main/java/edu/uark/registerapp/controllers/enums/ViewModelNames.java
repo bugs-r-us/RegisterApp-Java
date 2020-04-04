@@ -7,7 +7,10 @@ public enum ViewModelNames {
 	PRODUCTS("products"), // Product listing
 	PRODUCT("product"), // Product detail
 	SIGN_IN("signIn"),
-	EMPLOYEE("employee"); //idk it just didnt exist
+	EMPLOYEE("employee"), //idk it just didnt exist
+	TRANSACTION("transaction"),
+	TRANSACTION_CONTENT("transactionContent");	
+
 	
 	public String getValue() {
 		return value;

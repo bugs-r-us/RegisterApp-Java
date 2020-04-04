@@ -3,12 +3,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	console.log("SigninJS called");
 });
 
-// function validateForm() {
-// 	// TODO: Validate the user input
-// 	console.log("VALIDATION WAS CALLED");
-// 	return true;
-// }
-
 
 function validateForm() {
 

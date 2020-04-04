@@ -109,8 +109,6 @@ public class TransactionContentEntity {
 	}
 
 	//WE CAN  MAKE MORE BASED ON WHAT WE NEED
-<<<<<<< HEAD
-=======
 	public TransactionContentEntity(TransactionContent apiTransactionContent) {
 		this.id = new UUID(0, 0);;
         this.transactionid = apiTransactionContent.getTransactionID();
@@ -120,6 +118,5 @@ public class TransactionContentEntity {
 		this.createdOn = getCreatedOn();
 		
 	}
->>>>>>> master-dev
 	
 }

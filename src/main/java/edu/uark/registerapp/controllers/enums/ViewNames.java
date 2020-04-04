@@ -5,7 +5,9 @@ public enum ViewNames {             //TEMPLATE NAMES ARE
 	MAIN_MENU("mainMenu"),
 	PRODUCT_DETAIL("productDetail"),
 	EMPLOYEE_DETAIL("employeeDetail"),
-	PRODUCT_LISTING("productListing");
+	PRODUCT_LISTING("productListing"),
+	TRANSACTION_VIEW("transactionView");
+
 	
 	public String getRoute() {
 		return this.route;

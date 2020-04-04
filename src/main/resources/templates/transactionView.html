@@ -1,11 +1,11 @@
 <html xmlns:th="https://www.thymeleaf.org">
 
 <head>
-	<title>Register - Transactions</title>
+	<title>Register - Products</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
 	<link rel="stylesheet" type="text/css" href="/styles/master.css">
-	<link rel="stylesheet" type="text/css" href="/styles/transactionView.css">
+	<link rel="stylesheet" type="text/css" href="/styles/productListing.css">
 
 	<script type="text/javascript" src="/scripts/master.js" defer></script>
 	<script type="text/javascript" src="/scripts/transactionView.js" defer></script>
@@ -13,7 +13,7 @@
 
 <body>
 	<div class="header">
-		<h1 class="primary-message">Transaction Views!!</h1>
+		<h1 class="primary-message">TRANSACTION</h1>
 	</div>
 
 	<div id="main" class="main">
@@ -22,20 +22,23 @@
 		</div>
 
 		<div class="productsWrapper">
-			<span th:if="${isElevated}">
-				
+			<span th:if="${emptyCart}">
+				<div>
+					<h1>EMPTY </h1>
+				</div>
 			</span>
 
 			<br /><br />
 
 			<ul id="productsListing" class="products">
-				<li th:each="product : ${products}">
-					<input type="hidden" name="productId" th:value="${product.id}" />
-					<span class="productLookupCodeDisplay" th:text="${product.lookupCode}">lookupCode</span>
+				<li th:each="t : ${transaction}">
+					<input type="" name="productId" th:value="${t.price}" />
+					<!-- <span class="productLookupCodeDisplay" th:text="${product.lookupCode}">lookupCode</span>
 					<br />&nbsp;&nbsp;<span class="productCountDisplay" th:text="${product.count}">0</span>
-					<br />&nbsp;&nbsp;<span class="productCreatedOnDisplay" th:text="${product.createdOn}">12/31/1999</span>
+					<br />&nbsp;&nbsp;<span class="productCreatedOnDisplay" th:text="${product.createdOn}">12/31/1999</span> -->
 				</li>
-			</ul>
+            </ul>
+            <input type="" name="productId" th:value="${totalPrice}" />
 		</div>
 
 		<div class="hidden">

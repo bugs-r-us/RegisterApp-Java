@@ -22,7 +22,7 @@ public class TransactionQuery implements ResultCommandInterface<Transaction> {
 		if (transactionEntity.isPresent()) {
 			return new Transaction(transactionEntity.get());
 		} else {
-			throw new NotFoundException("Transaction");
+			throw new NotFoundException("Not available");
 		}
 	}
 
