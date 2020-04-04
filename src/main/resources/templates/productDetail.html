@@ -70,6 +70,28 @@
 			</div>
 		</div>
 	</div>
+
+	<h3>Add to transaction</h3>
+	<!-- TODO add error checking -->
+	<form action="/transactionContent" method="POST" class="inputContent">
+		<table id="addTransactionContent">
+			<tbody>
+				<tr class="hidden"> 
+					<td>Product ID:</td>
+					<td>
+						<input id="productId" name="productId" type="hidden" th:value="${!product.isEmpty} ? ${product.id} : ''" />
+					</td>
+				</tr>
+				<tr>
+					<td class="label">Quantity</td>
+					<td>
+						<input type="number" id="quantity" name="quantity" value="2" class="update" >
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<button value="Add" type="submit" class="action">Add</button>
+	</form>
 		
 </body>
 
