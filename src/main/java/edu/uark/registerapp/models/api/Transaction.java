@@ -26,12 +26,12 @@ public class Transaction extends ApiResponse {
 		return this;
     }
     
-    private UUID employeeID;
+    private UUID employeeId;
 	public UUID getEmployeeId() {
-		return this.employeeID;
+		return this.employeeId;
 	}
 	public Transaction setEmployeeId(final UUID id) {
-		this.employeeID = id;
+		this.employeeId = id;
 		return this;
 	}
 
@@ -81,7 +81,7 @@ public class Transaction extends ApiResponse {
 		super();
 
 		this.id =new UUID(0, 0);
-		this.employeeID = new UUID(0, 0);
+		this.employeeId = new UUID(0, 0);
         this.total = 0;
 		this.transactionstatus=0;
 		this.setCreatedOn(LocalDateTime.now());
@@ -92,7 +92,7 @@ public class Transaction extends ApiResponse {
 		super(false);
 
 		this.id =transactionEntity.getTransactionId();
-		this.employeeID = transactionEntity.getEmployeeID();
+		this.employeeId = transactionEntity.getEmployeeId();
         this.total = transactionEntity.getTotal();
 		this.transactionstatus=transactionEntity.gettransactionstatus();
 		this.setCreatedOn(transactionEntity.getCreatedOn());
