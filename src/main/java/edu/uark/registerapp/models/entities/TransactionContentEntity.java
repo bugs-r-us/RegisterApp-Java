@@ -109,6 +109,14 @@ public class TransactionContentEntity {
 	}
 
 	//WE CAN  MAKE MORE BASED ON WHAT WE NEED
-
+	public TransactionContentEntity(TransactionContent apiTransactionContent) {
+		this.id = new UUID(0, 0);;
+        this.transactionid = apiTransactionContent.getTransactionID();
+        this.productid = apiTransactionContent.getProductID();
+        this.quantity = apiTransactionContent.getQuantity();
+        this.price = apiTransactionContent.getPrice();
+		this.createdOn = getCreatedOn();
+		
+	}
 	
 }
