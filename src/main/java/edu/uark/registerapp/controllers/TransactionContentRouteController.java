@@ -30,6 +30,12 @@ public class TransactionContentRouteController extends BaseRouteController {
 		HttpServletRequest request
 	) 
 	{
+        // transcontentadd has proudct id as string  and quantity as int
+        // i made the creaate commmand might work idk
+        // need to get the employee  id and the linked transaction  
+        //  you'll need to mannually add data to your db for that
+        // transactionquery works with finding the trans by the employee  see transactionroutecontroller
+
 		String sessionID = request.getSession(true).getId();
 		TransactionContentAdd t = transactionContentAdd;
 
