@@ -52,6 +52,18 @@ public class ProductEntity {
 		return this;
 	}
 
+	@Column(name = "price")
+	private float price;
+
+	public float getPrice() {
+		return this.price;
+	}
+
+	public ProductEntity setPrice(final float price) {
+		this.price = price;
+		return this;
+	}
+
 	@Column(name = "createdon", insertable = false, updatable = false)
 	@Generated(GenerationTime.INSERT)
 	private LocalDateTime createdOn;
@@ -63,9 +75,11 @@ public class ProductEntity {
 	public Product synchronize(final Product apiProduct) {
 		this.setCount(apiProduct.getCount());
 		this.setLookupCode(apiProduct.getLookupCode());
+		this.setPrice(apiProduct.getPrice());
 
 		apiProduct.setId(this.getId());
 		apiProduct.setCreatedOn(this.getCreatedOn());
+		apiProduct.setPrice(this.getPrice());
 
 		return apiProduct;
 	}
@@ -74,6 +88,7 @@ public class ProductEntity {
 		this.count = -1;
 		this.id = new UUID(0, 0);
 		this.lookupCode = StringUtils.EMPTY;
+		this.price = 0;
 	}
 
 	public ProductEntity(final String lookupCode, final int count) {
@@ -86,5 +101,6 @@ public class ProductEntity {
     	this.id = new UUID(0, 0);
 		this.count = apiProduct.getCount();
 		this.lookupCode = apiProduct.getLookupCode();
+		this.price = apiProduct.getPrice();
 	}
 }

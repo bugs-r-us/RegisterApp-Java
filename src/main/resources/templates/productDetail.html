@@ -43,6 +43,12 @@
 							<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:disabled="${!isElevated}" />
 						</td>
 					</tr>
+					<tr>
+						<td class="label">Price:</td>
+						<td>
+							<input id="productPrice" type="number" th:value="${!product.isEmpty} ? ${product.price} : ''" class="update" th:disabled="${!isElevated}" />
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -80,6 +86,12 @@
 					<td>Product ID:</td>
 					<td>
 						<input id="productId" name="productId" type="hidden" th:value="${!product.isEmpty} ? ${product.id} : ''" />
+					</td>
+				</tr>
+				<tr class="hidden"> 
+					<td>Price:</td>
+					<td>
+						<input id="price" name="price" type="hidden" th:value="${!product.isEmpty} ? ${product.price} : ''" />
 					</td>
 				</tr>
 				<tr>
