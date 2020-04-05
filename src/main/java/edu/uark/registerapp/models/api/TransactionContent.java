@@ -21,8 +21,8 @@ public class TransactionContent extends ApiResponse {
     private UUID id;
     private UUID transactionid;
     private UUID productid;
-    private float quantity;
-    private double price;
+    private int quantity;
+    private float price;
     private String createdOn;
     
 
@@ -56,21 +56,21 @@ public class TransactionContent extends ApiResponse {
     }
     
     // QUANTITY
-	public float getQuantity() {
+	public int getQuantity() {
 		return this.quantity;
 	}
 
-	public TransactionContent setQuantity(final float quantity) {
+	public TransactionContent setQuantity(final int quantity) {
 		this.quantity = quantity;
 		return this;
     }
     
     // PRICE
-	public double getPrice() {
+	public float getPrice() {
 		return this.price;
 	}
 
-	public TransactionContent setPrice(final double price) {
+	public TransactionContent setPrice(final float price) {
 		this.price = price;
 		return this;
 	}

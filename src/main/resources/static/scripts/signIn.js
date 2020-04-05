@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	console.log("SigninJS called");
 });
 
-
 function validateForm() {
 
     var employeeID = document.getElementById("employeeID").value;
