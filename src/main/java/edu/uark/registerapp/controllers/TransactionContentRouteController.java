@@ -2,7 +2,10 @@ package edu.uark.registerapp.controllers;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
+import java.util.UUID;
 
+import edu.uark.registerapp.models.api.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +22,9 @@ import edu.uark.registerapp.models.api.EmployeeSignIn;
 import edu.uark.registerapp.models.api.TransactionContent;
 import edu.uark.registerapp.models.api.TransactionContentAdd;
 import edu.uark.registerapp.models.api.Employee;
-
+import edu.uark.registerapp.models.entities.ActiveUserEntity;
+import edu.uark.registerapp.commands.transactions.TransactionContentCreateCommand;
+import edu.uark.registerapp.commands.transactions.TransactionQuery;
 @Controller
 @RequestMapping(value = "/")
 public class TransactionContentRouteController extends BaseRouteController {
@@ -34,13 +39,23 @@ public class TransactionContentRouteController extends BaseRouteController {
         // i made the creaate commmand might work idk
         // need to get the employee  id and the linked transaction  
         //  you'll need to mannually add data to your db for that
-        // transactionquery works with finding the trans by the employee  see transactionroutecontroller
+		// transactionquery works with finding the trans by the employee  see transactionroutecontroller
+		final TransactionContent tc = new TransactionContent();
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 
-		String sessionID = request.getSession(true).getId();
-		TransactionContentAdd t = transactionContentAdd;
+        this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+        Transaction t = this.transactionQuery.execute(); 
+		TransactionContentAdd tca = transactionContentAdd;
+		tc.setProductID(UUID.fromString(tca.getProductId()));;
+		tc.setQuantity(tca.getQuantity());
+		tc.setPrice(tca.getPrice() * tca.getQuantity()); //made price = price * quantity
+		tc.setTransactionID(t.getTransactionId());
+
+		// transactionContentCreate.setApiTransactionContent(tc).execute();
 
 		try{
 			// this.employeeSignInCommand.setapiEmployeeSignIn(employeeSignIn).setSessionKey(sessionID).execute();
+			transactionContentCreate.setApiTransactionContent(tc).execute();
 			return new ModelAndView(
 						REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
 		}catch (Exception exception){
@@ -54,5 +69,9 @@ public class TransactionContentRouteController extends BaseRouteController {
 	private ActiveEmployeeExistsQuery activeEmployeeExistsQuery;
 	@Autowired
 	private EmployeeSignInCommand employeeSignInCommand;
+	@Autowired
+	private TransactionQuery transactionQuery;
+	@Autowired
+	private TransactionContentCreateCommand transactionContentCreate;
 }
 
