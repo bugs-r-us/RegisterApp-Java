@@ -21,6 +21,12 @@ import edu.uark.registerapp.models.api.TransactionContent;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 
 
+import edu.uark.registerapp.commands.products.ProductQuery;
+import edu.uark.registerapp.models.api.Product;
+import edu.uark.registerapp.models.api.Test;
+
+
+
 @Controller
 @RequestMapping(value = "/transactionView")
 public class TransactionRouteController extends BaseRouteController  {
@@ -35,12 +41,20 @@ public class TransactionRouteController extends BaseRouteController  {
         this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
         Transaction t = this.transactionQuery.execute(); 
 
-        List<TransactionContent> content = this.transactionContentsQuery.setTransactionId(t.getTransactionId()).execute();
+		List<TransactionContent> content = this.transactionContentsQuery.setTransactionId(t.getTransactionId()).execute();
+		List<Test> tester= new LinkedList <Test>();
+		for (TransactionContent c: content )
+		{
+			tester.add( new Test(c, this.productQuery.setProductId(c.getProductID()).execute()));
+		}
+		
 
 		if (content.isEmpty()){
 			modelAndView.addObject("emptyCart", true);
 		}else{
 			modelAndView.addObject("emptyCart", false);
+			modelAndView.addObject("listTest", tester);
+			//modelAndView.addObject("productList", tester.getTestProduct());
 		}
 
 		try {
@@ -60,5 +74,8 @@ public class TransactionRouteController extends BaseRouteController  {
     @Autowired
     private TransactionQuery transactionQuery;
     @Autowired
-    private TransactionContentsQuery transactionContentsQuery;
+	private TransactionContentsQuery transactionContentsQuery;
+	// Properties
+	@Autowired
+	private ProductQuery productQuery;
 }
