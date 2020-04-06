@@ -39,6 +39,16 @@ public class Product extends ApiResponse {
 		this.count = count;
 		return this;
 	}
+	
+	private float price;
+	public float getPrice() {
+		return this.price;
+	}
+
+	public Product setPrice(final float price) {
+		this.price = price;
+		return this;
+	}
 
 	private String createdOn;
 
@@ -67,7 +77,7 @@ public class Product extends ApiResponse {
 
 		this.count = -1;
 		this.lookupCode = StringUtils.EMPTY;
-
+		this.price = 0;
 		
 	}
 
@@ -77,6 +87,7 @@ public class Product extends ApiResponse {
 		this.id = productEntity.getId();
 		this.count = productEntity.getCount();
 		this.lookupCode = productEntity.getLookupCode();
+		this.price = productEntity.getPrice();
 
 		this.setCreatedOn(productEntity.getCreatedOn());
 	}

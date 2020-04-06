@@ -52,25 +52,25 @@ public class TransactionContentEntity {
 	}
 
 	@Column(name = "quantity")
-	private float quantity;
+	private int quantity;
 
-	public float getQuantity() {
+	public int getQuantity() {
 		return this.quantity;
 	}
 
-	public TransactionContentEntity setQuantity(final float quantity) {
+	public TransactionContentEntity setQuantity(final int quantity) {
 		this.quantity = quantity;
 		return this;
     }
     
     @Column(name = "price")
-	private double price;
+	private float price;
 
-	public double getPrice() {
+	public float getPrice() {
 		return this.price;
 	}
 
-	public TransactionContentEntity setPrice(final double price) {
+	public TransactionContentEntity setPrice(final float price) {
 		this.price = price;
 		return this;
 	}
