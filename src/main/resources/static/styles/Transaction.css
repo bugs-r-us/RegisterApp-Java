@@ -1,0 +1,26 @@
+h1 {
+  text-decoration: underline;
+  color: purple;
+}
+
+div input {
+  border: 15px green;
+}
+
+fieldset.product {
+  display:inline;
+  border-color: blue;
+}
+
+fieldset.total {
+  display:inline;
+  border-color: red;
+}
+
+button {
+  border-radius: 25px;
+}
+
+input.quantity {
+  height: 10px;
+}
