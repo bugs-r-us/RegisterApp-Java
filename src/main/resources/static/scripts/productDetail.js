@@ -136,7 +136,19 @@ function deleteActionClick(event) {
 	});
 };
 // End delete
-
+function quantityUpdate(id) {
+	let countElement = getProductCountElement();
+	let quantity = getProductCount();
+	if (id == "countIncr")
+		{
+				quantity +=1;
+		}
+	else
+	{
+		quantity -=1;
+	}
+	countElement.value = quantity
+}
 // Getters and setters
 function getSaveActionElement() {
 	return document.getElementById("saveButton");

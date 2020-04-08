@@ -12,6 +12,53 @@
 </head>
 
 <body>
+​
+    <div class="header">
+        <h1 class="primary-message">Product Detail</h1>
+    </div>
+​
+    <div id="main" class="main">
+        <div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
+            <h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
+        </div>
+​
+        <div class="productDetailWrapper">
+            <table id="productDetails">
+                <tbody>
+                    <tr class="hidden">
+                        <td>ID:</td>
+                        <td>
+                            <input id="productId" type="hidden" th:value="${!product.isEmpty} ? ${product.id} : ''" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Lookup Code:</td>
+                        <td>
+                            <input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:disabled="${!isElevated}" />
+                        </td>
+                    </tr>
+                    <tr>
+						<td class="label">Count:</td>
+						<td class="label">:</td>
+						<td><button type ="button" id= "countDecr" onclick="quantityUpdate(id)">-</button></td>
+                        <td>
+							<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:disabled="${!isElevated}" />
+						</td>
+						<td align="left"><button type ="button" id= "countIncr" onclick="quantityUpdate(id)">+</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+​
+        <span th:if=${!product.isEmpty}>
+			<form>
+​
+			</form>
+			<button type="button" id="addButton" class="action">Add</button>
+		</span>
+​
+​
+        <span th:if="${isElevated}">
 
 	<div class="header">
 		<h1 class="primary-message">Product Detail</h1>

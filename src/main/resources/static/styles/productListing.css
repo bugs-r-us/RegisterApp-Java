@@ -3,24 +3,7 @@
 }
 
 
-.countIncr {
-	display: inline-block;
-	color:  #FFF;
-	background-color: #00CC66;
-	margin: 0em;
-	text-align: center;
-	border-radius: 0 6px 6px 0;
-}
 
-
-.countDecr {
-	display: inline-block;
-	color:  #FFF;
-	background-color: #FF5050;
-	margin: 0em;
-	text-align: center;
-	border-radius: 6px 0 0 6px;
-}
 
 .products {
 	margin: 0 0 2em 0;

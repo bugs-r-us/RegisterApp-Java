@@ -5,6 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		productListElements[i].addEventListener("click", productClick);
 	}
 });
+//Caleb's code: On increment button click
+//This will make use of the findClicked
+
+
+
+
+
+
 
 function findClickedListItemElement(clickedTarget) {
 	if (clickedTarget.tagName.toLowerCase() === "li") {
