@@ -77,9 +77,10 @@
 		</div>
 	</div>
 
-	<h3>Add to transaction</h3>
-	<!-- TODO add error checking -->
-	<form action="/transactionContent" method="POST" class="inputContent">
+	<span th:if="${isTransaction}">
+		<h3>Add to transaction</h3>
+		<!-- TODO add error checking -->
+		<form action="/transactionContent" method="POST" class="inputContent">
 		<table id="addTransactionContent">
 			<tbody>
 				<tr class="hidden"> 
@@ -103,7 +104,8 @@
 			</tbody>
 		</table>
 		<button value="Add" type="submit" class="action">Add</button>
-	</form>
+		</form>
+	</span>
 		
 </body>
 ​
