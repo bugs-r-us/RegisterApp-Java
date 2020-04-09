@@ -38,10 +38,17 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="label">Count:</td>
-						<td>
+						
+						<td class="label" >Count:</td>
+						
+						<td valign="middle">
+							
+							<button id = "countAdd" onclick="incrementCount(id)">+</button>
 							<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:disabled="${!isElevated}" />
+							<button id = "countSubtract" onclick="incrementCount(id)"> - </button>
 						</td>
+						
+						
 					</tr>
 					<tr>
 						<td class="label">Price:</td>
@@ -97,6 +104,7 @@
 				</tr>
 				<tr>
 					<td class="label">Quantity</td>
+					
 					<td>
 						<input type="number" id="quantity" name="quantity" value="2" class="update" >
 					</td>
