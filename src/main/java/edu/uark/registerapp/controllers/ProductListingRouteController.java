@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uark.registerapp.commands.products.ProductsQuery;
+import edu.uark.registerapp.commands.transactions.TransactionQuery;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.Product;
@@ -35,6 +36,16 @@ public class ProductListingRouteController extends BaseRouteController  {
 			modelAndView.addObject("isElevated", false);
 		}
 
+		// Checks for valid transaction...
+		try{
+			this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+			this.transactionQuery.execute(); 
+			modelAndView.addObject("isTransaction", true);
+		}catch(Exception e){
+			modelAndView.addObject("isTransaction", false);
+		}
+
+
 		try {
 			modelAndView.addObject( ViewModelNames.PRODUCTS.getValue(), this.productsQuery.execute());
 
@@ -53,4 +64,7 @@ public class ProductListingRouteController extends BaseRouteController  {
 	// Properties
 	@Autowired
 	private ProductsQuery productsQuery;
+
+	@Autowired
+	private TransactionQuery transactionQuery;
 }
