@@ -120,6 +120,28 @@ function hideProductSavedAlertModal() {
 }
 // End save
 
+// Button Specific Methods
+function incrementCount(id){
+
+	let field =document.getElementById("productCount")
+	let count = Number(field.value);
+	//increment up or down based on button id
+	if(id =="countAdd"){
+		count+=1;
+	}
+	else{
+		count-=1
+	}
+	//Don't allow negative numbers
+	if (count < 0){
+		count = 0;
+	}
+	field.value = count;
+
+}
+
+//end button specific methods
+
 // Delete
 function deleteActionClick(event) {
 	const deleteActionElement = event.target;
@@ -136,19 +158,7 @@ function deleteActionClick(event) {
 	});
 };
 // End delete
-function quantityUpdate(id) {
-	let countElement = getProductCountElement();
-	let quantity = getProductCount();
-	if (id == "countIncr")
-		{
-				quantity +=1;
-		}
-	else
-	{
-		quantity -=1;
-	}
-	countElement.value = quantity
-}
+
 // Getters and setters
 function getSaveActionElement() {
 	return document.getElementById("saveButton");

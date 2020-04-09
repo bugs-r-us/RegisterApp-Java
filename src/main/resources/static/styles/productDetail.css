@@ -2,21 +2,30 @@
 	display: inline-block;
 }
 
-#countIncr {
-	display: inline-block;
-	color:  #FFF;
-	background-color: #00CC66;
-	margin: 0em;
-	text-align: center;
-	border-radius: 0 6px 6px 0;
+#countAdd {
+    float: left;
+    color: white;
+    background-color: rgb(66, 182, 114);
+    font-family: monospace;
+    text-align: center;
+    font-size: 16;
+    border-radius: 25px 25px 0px 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-width: 0px;
 }
-
-
-#countDecr {
-	display: inline-block;
-	color:  #FFF;
-	background-color: #FF5050;
-	margin: 0em;
-	text-align: center;
-	border-radius: 6px 0 0 6px;
+#countSubtract {
+    float:left;
+    color: white;
+    background-color:rgb(231, 145, 111);
+    font-family: monospace;
+    text-align: center;
+    font-size: 16;
+    border-radius: 0px 0px 25px 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-style: solid;
+    border-width: 0px;
+    
 }
