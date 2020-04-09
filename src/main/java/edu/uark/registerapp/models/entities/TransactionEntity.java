@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
@@ -65,7 +64,6 @@ public class TransactionEntity {
 	}
 
 	
-
 	@Column(name = "createdon", insertable = false, updatable = false)
 	@Generated(GenerationTime.INSERT)
 	private LocalDateTime createdOn;
@@ -77,7 +75,7 @@ public class TransactionEntity {
 	public Transaction synchronize(final Transaction apiTransaction) {
 		this.setEmployeeId(apiTransaction.getEmployeeId());
 		this.setTotal(apiTransaction.getTotal());
-		this.settransactionstatus(apiTransaction.gettransactionstatus());
+		this.settransactionstatus(apiTransaction.getStatus());
 
 //what the  Transaction  doesn't auto  generate that  the db does
 		apiTransaction.setTransactionId(this.getTransactionId());
@@ -92,20 +90,13 @@ public class TransactionEntity {
         this.total = 0;
 		this.transactionstatus = 0;
 		this.createdOn=getCreatedOn();
-		
 	}
 
-	//WE CAN  MAKE MORE BASED ON WHAT WE NEED
-
-	// public TransactionEntity(final String lookupCode, final int count) {
-	// 	this.count = count;
-	// 	this.id = new UUID(0, 0);
-	// 	this.lookupCode = lookupCode;
-	// }
-
-	// public ProductEntity(final Product apiProduct) {
-    // 	this.id = new UUID(0, 0);
-	// 	this.count = apiProduct.getCount();
-	// 	this.lookupCode = apiProduct.getLookupCode();
-	// }
+	public TransactionEntity(final Transaction apiTransaction) {
+		this.id = new UUID(0, 0);
+		this.employeeId = apiTransaction.getEmployeeId();
+        this.total = apiTransaction.getTotal();
+		this.transactionstatus = apiTransaction.getStatus();
+		this.createdOn = getCreatedOn();
+	}
 }

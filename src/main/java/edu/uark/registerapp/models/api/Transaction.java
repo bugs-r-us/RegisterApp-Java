@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
-
 import edu.uark.registerapp.models.entities.TransactionEntity;
 /*
 transaction id
@@ -48,11 +46,11 @@ public class Transaction extends ApiResponse {
 
 	private int transactionstatus;
 
-	public int gettransactionstatus() {
+	public int getStatus() {
 		return this.transactionstatus;
 	}
 
-	public Transaction settransactionstatus(final int status) {
+	public Transaction setStatus(final int status) {
 		this.transactionstatus = status;
 		return this;
 	}
