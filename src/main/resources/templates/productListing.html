@@ -21,7 +21,24 @@
 			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
 		</div>
 
+		<h3 class="header-message">Search for a product by name</h3>
+		
+
 		<div class="productsWrapper">
+			<form action="/productListing">
+				<input type="text" class="label" id="searchBar" value="lookupcode3">
+				<button type="submit" class="action">Search</button>
+			</form>
+				<ul class="products">
+					<li th:each="product : ${products}" th:if="${product.lookupCode}=='lookupcode3'">
+						<span class="productLookupCodeDisplay" th:text="${product.lookupCode}"></span>
+						<br />&nbsp;&nbsp;<span class="productCountDisplay" th:text="${product.count}">0</span>
+					<br />&nbsp;&nbsp;<span class="productCreatedOnDisplay" th:text="${product.price}">$0.00</span>
+					</li>
+				</ul>
+
+
+
 			<span th:if="${isElevated}">
 				<div>
 					<a href="/productDetail/" class="button">Create New</a>
