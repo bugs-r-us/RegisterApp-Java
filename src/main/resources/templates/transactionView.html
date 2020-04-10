@@ -1,11 +1,11 @@
 <html xmlns:th="https://www.thymeleaf.org">
 
 <head>
-	<title>Register - Products</title>
+	<title>Register - Transaction View</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
 	<link rel="stylesheet" type="text/css" href="/styles/master.css">
-	<link rel="stylesheet" type="text/css" href="/styles/productListing.css">
+	<link rel="stylesheet" type="text/css" href="/styles/transactionView.css">
 
 	<script type="text/javascript" src="/scripts/master.js" defer></script>
 	<script type="text/javascript" src="/scripts/transactionView.js" defer></script>
@@ -16,12 +16,13 @@
 		<h1 class="primary-message">TRANSACTION</h1>
 	</div>
 
+
 	<div id="main" class="main">
 		<div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
 			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
 		</div>
 
-		<div class="productsWrapper">
+		<div class="transactionWrapper">
 			<span th:if="${emptyCart}">
 				<div>
 					<h1>EMPTY </h1>
@@ -29,21 +30,27 @@
 			</span>
 
 			<br /><br />
-
+			<p>Today is: <span th:text="${today}">13 February 2011</span></p>
+	
+			<tr th:each="c : ${listTest}">
+				<div>
+					<div id="outer">
+						<div class="inner"><button type="submit" class="msgBtn" onClick="return false;" >X</button></div>
+						<td class="inner" th:text="${c.product.lookupCode}">1</td>
+						<div class="inner"><button type="submit" class="msgBtn2" onClick="return false;">+</button></div>
+						<div class="inner"> 
+							<p><span th:text="${c.transactionContent.quantity}"></span></p>
+						</div>
+						<div class="inner"><button class="msgBtnBack">-</button></div>
+					  </div>
+				</div>
+				
+			</tr>
 			
-			<ul id="productsListing" class="products">
-				<li th:each="c : ${listTest}">
-					<input type="" name="productId" th:value="${c.product.count}" />
-					<input type="" name="productId" th:value="${c.transactionContent.quantity}" />
-					
-					<!-- <span class="productLookupCodeDisplay" th:text="${product.lookupCode}">lookupCode</span>
-					<br />&nbsp;&nbsp;<span class="productCountDisplay" th:text="${product.count}">0</span>
-					<br />&nbsp;&nbsp;<span class="productCreatedOnDisplay" th:text="${product.createdOn}">12/31/1999</span> -->
-				</li>
-			</ul>
+			<p><span th:text="${transTotal}"></span></p>
+			
 			
 
-            <input type="" name="productId" th:value="${totalPrice}" />
 		</div>
 
 		<div class="hidden">

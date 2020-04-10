@@ -54,6 +54,8 @@ public class TransactionRouteController extends BaseRouteController  {
 		}else{
 			modelAndView.addObject("emptyCart", false);
 			modelAndView.addObject("listTest", tester);
+			modelAndView.addObject("transTotal", t.getTotal());
+
 			//modelAndView.addObject("productList", tester.getTestProduct());
 		}
 
