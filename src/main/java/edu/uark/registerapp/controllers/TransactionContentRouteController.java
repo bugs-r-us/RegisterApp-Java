@@ -26,6 +26,7 @@ import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.repositories.TransactionContentRepository;
 import edu.uark.registerapp.commands.transactions.TransactionContentCreateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionContentUpdateCommand;
+import edu.uark.registerapp.commands.transactions.TransactionUpdateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionContentsQuery;
 import edu.uark.registerapp.commands.transactions.TransactionQuery;
 
@@ -44,8 +45,8 @@ public class TransactionContentRouteController extends BaseRouteController {
 		final TransactionContent tc = new TransactionContent();
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 
-		boolean test = false; // testing dis
 
+		
 		// link each row to transaction
 		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
 		Transaction t = this.transactionQuery.execute();
@@ -53,26 +54,31 @@ public class TransactionContentRouteController extends BaseRouteController {
 		this.transactionContentsQuery.setTransactionId(t.getTransactionId());
 
 		List<TransactionContent> tc1 = this.transactionContentsQuery.execute();
+
+		boolean test = false;
+		float price = tca.getPrice() * tca.getQuantity();; // made price = price * quantity
+		int quantity = tca.getQuantity();
 		try {
 			// see if product already exists in db and update quantity and price
+			// TODO: check that this works for other transaction db tuples
 			for (TransactionContent tc2 : tc1) {
 				if (UUID.fromString(tca.getProductId()).equals(tc2.getProductID())) {
 					test = true;
-					int quantity = tca.getQuantity() + tc2.getQuantity();
-					tc2.setQuantity(quantity);
-					float price = tc2.getPrice() + (tca.getPrice() * tca.getQuantity());
-					tc2.setPrice(price);
+					tc2.setQuantity(quantity + tc2.getQuantity());
+					tc2.setPrice(tc2.getPrice() + price);
 					transactionContentUpdate.setID(tc2.getId()).setapiTCA(tc2).execute();
 				}
 			}
 			// if !exist, add to db
 			if (test == false) {
 				tc.setProductID(UUID.fromString(tca.getProductId()));
-				tc.setQuantity(tca.getQuantity());
-				tc.setPrice(tca.getPrice() * tca.getQuantity()); // made price = price * quantity
+				tc.setQuantity(quantity);
+				price = tca.getPrice() * tca.getQuantity();
+				tc.setPrice(price);
 				tc.setTransactionID(t.getTransactionId());
 				transactionContentCreate.setApiTransactionContent(tc).execute();
 			}
+			updateTotal(t, price);
 
 			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
 		} catch (Exception exception) {
@@ -81,6 +87,14 @@ public class TransactionContentRouteController extends BaseRouteController {
 		}
 	}
 
+	//helper method because needed for conditionals
+	public void updateTotal(Transaction t, float price) {
+		//updates the total of tht transaction
+		float total = t.getTotal() + price;
+		t.setTotal(total);
+		transactionUpdate.setID(t.getTransactionId()).setApiTransaction(t).execute();
+
+	}
 	@Autowired
 	private ActiveEmployeeExistsQuery activeEmployeeExistsQuery;
 	@Autowired
@@ -95,4 +109,6 @@ public class TransactionContentRouteController extends BaseRouteController {
 	private TransactionContentRepository transactionContentRepository;
 	@Autowired
 	private TransactionContentUpdateCommand transactionContentUpdate;
+	@Autowired
+	private TransactionUpdateCommand transactionUpdate;
 }

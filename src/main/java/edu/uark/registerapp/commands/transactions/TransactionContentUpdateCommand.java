@@ -20,6 +20,7 @@ public class TransactionContentUpdateCommand implements ResultCommandInterface<T
         
         final Optional<TransactionContentEntity> transactionContentEntity = 
             this.transactionContentRepo.findById(this.id);
+            // idk about this if statement...
             if(!transactionContentEntity.isPresent()) {
                 throw new NotFoundException("Transaction Content");
             }
