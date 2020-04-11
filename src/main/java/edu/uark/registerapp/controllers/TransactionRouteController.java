@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uark.registerapp.commands.transactions.TransactionContentsQuery;
+import edu.uark.registerapp.commands.transactions.TransactionCreateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionQuery;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
@@ -22,9 +23,7 @@ import edu.uark.registerapp.models.entities.ActiveUserEntity;
 
 
 import edu.uark.registerapp.commands.products.ProductQuery;
-import edu.uark.registerapp.models.api.Product;
 import edu.uark.registerapp.models.api.Test;
-
 
 
 @Controller
@@ -72,9 +71,37 @@ public class TransactionRouteController extends BaseRouteController  {
 		return modelAndView;
 	}
 
+	@RequestMapping(value = "/start", method = RequestMethod.GET)
+	public ModelAndView startTransaction(final HttpServletRequest request) {
+
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+
+		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+
+		try{
+			this.transactionQuery.execute(); 	
+		}catch(Exception e){
+			// Creates Transaction if one doesn't exist
+			Transaction apiTransaction = new Transaction();
+			apiTransaction.setEmployeeId(activeUserEntity.get().getEmployeeId());
+			apiTransaction.setTotal(0);
+			apiTransaction.setStatus(0);
+
+			this.TransactionCreateCommand.setApiTransaction(apiTransaction);
+			this.TransactionCreateCommand.execute();
+		}
+        
+		// Redirects to ProductListing page
+		return new ModelAndView(
+			REDIRECT_PREPEND.concat(ViewNames.PRODUCT_LISTING.getRoute()));
+	}
+
+
 	// Properties
     @Autowired
-    private TransactionQuery transactionQuery;
+	private TransactionQuery transactionQuery;
+	@Autowired
+	private TransactionCreateCommand TransactionCreateCommand;
     @Autowired
 	private TransactionContentsQuery transactionContentsQuery;
 	// Properties
