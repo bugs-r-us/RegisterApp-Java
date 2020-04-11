@@ -32,6 +32,26 @@ function productCountKeypress(event) {
 
 	saveActionClick();
 }
+// Button Input
+function incrementCount(id){
+
+	let field =document.getElementById("productCount")
+	let count = Number(field.value);
+	//increment up or down based on button id
+	if(id =="countAdd"){
+		count+=1;
+	}
+	else{
+		count-=1
+	}
+	//Don't allow negative numbers
+	if (count < 0){
+		count = 0;
+	}
+	field.value = count;
+
+}
+
 
 // Save
 function saveActionClick(event) {

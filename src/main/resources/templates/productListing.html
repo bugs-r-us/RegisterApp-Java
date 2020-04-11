@@ -29,7 +29,13 @@
 			</span>
 
 			<br /><br />
+			<span th:if="${isTransaction}">
+				<div>
+					<a href="/transactionView/" class="button">View Transaction</a>
+				</div>
+			</span>
 
+			<br /><br />
 
 			<!-- Needs to be reformatted for price -->
 			<ul id="productsListing" class="products">
