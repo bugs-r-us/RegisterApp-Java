@@ -1,19 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-	const productListElements = document.getElementById("productsListing").children;
-
-	for (let i = 0; i < productListElements.length; i++) {
-		productListElements[i].addEventListener("click", productClick);
-	}
-});
-//Caleb's code: On increment button click
-//This will make use of the findClicked
-
-
-
-
-
-
-
 function findClickedListItemElement(clickedTarget) {
 	if (clickedTarget.tagName.toLowerCase() === "li") {
 		return clickedTarget;
@@ -40,3 +24,12 @@ function productClick(event) {
 		"/productDetail/"
 		+ listItem.querySelector("input[name='productId'][type='hidden']").value);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+	const productListElements = document.getElementById("productsListing").children;
+
+	for (let i = 0; i < productListElements.length; i++) {
+		productListElements[i].addEventListener("click", productClick);
+	}
+});
+});

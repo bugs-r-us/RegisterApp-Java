@@ -54,6 +54,7 @@ public class EmployeeRestController extends BaseRestController {
 				// not an active user
 				if (activeUserEntity == null){
 					response.setStatus(HttpStatus.FOUND.value());
+
 					return(new ApiResponse())
 					.setRedirectUrl(ViewNames.SIGN_IN.getRoute().concat(
 						this.buildInitialQueryParameter(QueryParameterNames.ERROR_CODE.getValue(), 

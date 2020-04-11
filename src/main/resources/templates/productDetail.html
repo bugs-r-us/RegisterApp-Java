@@ -1,16 +1,16 @@
 <html xmlns:th="https://www.thymeleaf.org">
-
+​
 <head>
-	<title>Register - Product</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>Register - Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" type="text/css" href="/styles/master.css">
-	<link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
+    <link rel="stylesheet" type="text/css" href="/styles/master.css">
+    <link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
 
-	<script type="text/javascript" src="/scripts/master.js" defer></script>
-	<script type="text/javascript" src="/scripts/productDetail.js" defer></script>
+    <script type="text/javascript" src="/scripts/master.js" defer></script>
+    <script type="text/javascript" src="/scripts/productDetail.js" defer></script>
 </head>
-
+​
 <body>
 ​
     <div class="header">
@@ -60,14 +60,9 @@
 ​
         <span th:if="${isElevated}">
 
-	<div class="header">
-		<h1 class="primary-message">Product Detail</h1>
-	</div>
-		
-	<div id="main" class="main">
-		<div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
-			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
-		</div>
+    <div class="header">
+        <h1 class="primary-message">Product Detail</h1>
+    </div>
 
 		<div class="productDetailWrapper">
 			<table id="productDetails">
@@ -85,16 +80,29 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="label">Count:</td>
-						<td>
+						
+						<td class="label" >Count:</td>
+						
+						<td valign="middle">
+							
+							<button id = "countAdd" onclick="incrementCount(id)">+</button>
 							<input id="productCount" type="number" th:value="${!product.isEmpty} ? ${product.count} : ''" class="update" th:disabled="${!isElevated}" />
+							<button id = "countSubtract" onclick="incrementCount(id)"> - </button>
+						</td>
+						
+						
+					</tr>
+					<tr>
+						<td class="label">Price:</td>
+						<td>
+							<input id="productPrice" type="number" th:value="${!product.isEmpty} ? ${product.price} : ''" class="update" th:disabled="${!isElevated}" />
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<span th:if="${isElevated}">
+        <span th:if="${isElevated}">
 		<div class="productActionsWrapper">
 			<br />
 			<div id="deleteActionContainer" th:class="${product.isEmpty} ? hidden : ''">
@@ -117,7 +125,38 @@
 			</div>
 		</div>
 	</div>
+
+	<span th:if="${isTransaction}">
+		<h3>Add to transaction</h3>
+		<!-- TODO add error checking -->
+		<form action="/transactionContent" method="POST" class="inputContent">
+		<table id="addTransactionContent">
+			<tbody>
+				<tr class="hidden"> 
+					<td>Product ID:</td>
+					<td>
+						<input id="productId" name="productId" type="hidden" th:value="${!product.isEmpty} ? ${product.id} : ''" />
+					</td>
+				</tr>
+				<tr class="hidden"> 
+					<td>Price:</td>
+					<td>
+						<input id="price" name="price" type="hidden" th:value="${!product.isEmpty} ? ${product.price} : ''" />
+					</td>
+				</tr>
+				<tr>
+					<td class="label">Quantity</td>
+					
+					<td>
+						<input type="number" id="quantity" name="quantity" value="1" class="update" >
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<button value="Add" type="submit" class="action">Add</button>
+		</form>
+	</span>
 		
 </body>
-
+​
 </html>

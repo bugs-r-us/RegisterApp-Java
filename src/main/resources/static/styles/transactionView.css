@@ -1,18 +1,15 @@
-.productsWrapper {
+.transactionWrapper {
 	display: inline-block;
 }
 
-
-
-
-.products {
+.transaction {
 	margin: 0 0 2em 0;
 	list-style-type: none;
 	padding: 0;
 	width: 15em;
 }
 
-.products li {
+.transaction li {
 	cursor: pointer;
 	background-color: #EEE;
 	margin: .5em;
@@ -22,7 +19,7 @@
 	text-align: left;
 }
 
-.products li:hover {
+.transaction li:hover {
 	color: #607D8B;
 	background-color: #DDD;
 	left: .1em;
@@ -32,6 +29,13 @@ a.button {
 	text-decoration: none;
 }
 
-input.label {
-	font-weight: bold;
+
+#outer
+{
+    width:100%;
+    text-align: center;
+}
+.inner
+{
+    display: inline-block;
 }
