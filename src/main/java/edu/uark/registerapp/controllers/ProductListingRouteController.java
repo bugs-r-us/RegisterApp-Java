@@ -50,12 +50,12 @@ public class ProductListingRouteController extends BaseRouteController  {
 
 
 		try {
+			if (search == null || search == "")
 				modelAndView.addObject( ViewModelNames.PRODUCTS.getValue(), this.productsQuery.execute());
 			else
 			{
 				modelAndView.addObject( ViewModelNames.PRODUCTS.getValue(), this.productsQuerySearch.setSearchName(search).execute());
 			}
-			if (search == null || search == "")
 		} catch (final Exception e) {
 			modelAndView.addObject(
 				ViewModelNames.ERROR_MESSAGE.getValue(),
