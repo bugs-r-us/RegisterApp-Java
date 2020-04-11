@@ -14,17 +14,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
 import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
+import edu.uark.registerapp.commands.products.ProductQuery;
 import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
 import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.EmployeeSignIn;
+import edu.uark.registerapp.models.api.Product;
+import edu.uark.registerapp.models.api.TranasctionIncrementDecrement;
 import edu.uark.registerapp.models.api.TransactionContent;
 import edu.uark.registerapp.models.api.TransactionContentAdd;
 import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.repositories.TransactionContentRepository;
 import edu.uark.registerapp.commands.transactions.TransactionContentCreateCommand;
+import edu.uark.registerapp.commands.transactions.TransactionContentQuery;
 import edu.uark.registerapp.commands.transactions.TransactionContentUpdateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionUpdateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionContentsQuery;
@@ -36,16 +40,9 @@ public class TransactionContentRouteController extends BaseRouteController {
 
 	@RequestMapping(value = "/transactionContent", method = RequestMethod.POST)
 	public ModelAndView addTransactionContent(TransactionContentAdd transactionContentAdd, HttpServletRequest request) {
-		// transcontentadd has proudct id as string and quantity as int
-		// i made the creaate commmand might work idk
-		// need to get the employee id and the linked transaction
-		// you'll need to mannually add data to your db for that
-		// transactionquery works with finding the trans by the employee see
-		// transactionroutecontroller
 		final TransactionContent tc = new TransactionContent();
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
-
-
+		
 		
 		// link each row to transaction
 		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
@@ -87,6 +84,53 @@ public class TransactionContentRouteController extends BaseRouteController {
 		}
 	}
 
+	@RequestMapping(value = "/increment", method = RequestMethod.POST)
+	public ModelAndView transactionContentIncrement(TranasctionIncrementDecrement tranasctionIncrementDecrement, HttpServletRequest request) {
+		UUID transactionContentID = UUID.fromString(tranasctionIncrementDecrement.getTransactionContentID());
+		TransactionContent tc = this.transactionContentQuery.setTransactionContentId(transactionContentID).execute();
+		Product p = this.productQuery.setProductId(tc.getProductID()).execute();
+
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+		Transaction t = this.transactionQuery.execute();
+		
+		int newQuantity = tc.getQuantity() + 1;
+		float newPrice = newQuantity * p.getPrice();
+		float difference = p.getPrice();
+		tc.setQuantity(newQuantity);
+		tc.setPrice(newPrice);
+
+		transactionContentUpdate.setID(transactionContentID).setapiTCA(tc).execute();
+
+		updateTotal(t, difference);
+
+		return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.TRANSACTION_VIEW.getRoute()));
+	}
+
+
+	@RequestMapping(value = "/decrement", method = RequestMethod.POST)
+	public ModelAndView transactionContentDecrement(TranasctionIncrementDecrement tranasctionIncrementDecrement, HttpServletRequest request) {
+		UUID transactionContentID = UUID.fromString(tranasctionIncrementDecrement.getTransactionContentID());
+		TransactionContent tc = this.transactionContentQuery.setTransactionContentId(transactionContentID).execute();
+		Product p = this.productQuery.setProductId(tc.getProductID()).execute();
+
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+		Transaction t = this.transactionQuery.execute();
+		
+		int newQuantity = tc.getQuantity() - 1;
+		float newPrice = newQuantity * p.getPrice();
+		float difference = -1 * p.getPrice();
+		tc.setQuantity(newQuantity);
+		tc.setPrice(newPrice);
+
+		transactionContentUpdate.setID(transactionContentID).setapiTCA(tc).execute();
+
+		updateTotal(t, difference);
+
+		return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.TRANSACTION_VIEW.getRoute()));
+	}
+
 	//helper method because needed for conditionals
 	public void updateTotal(Transaction t, float price) {
 		//updates the total of tht transaction
@@ -96,17 +140,15 @@ public class TransactionContentRouteController extends BaseRouteController {
 
 	}
 	@Autowired
-	private ActiveEmployeeExistsQuery activeEmployeeExistsQuery;
-	@Autowired
-	private EmployeeSignInCommand employeeSignInCommand;
-	@Autowired
 	private TransactionQuery transactionQuery;
+	@Autowired
+	private ProductQuery productQuery;
 	@Autowired
 	private TransactionContentCreateCommand transactionContentCreate;
 	@Autowired
 	private TransactionContentsQuery transactionContentsQuery;
 	@Autowired
-	private TransactionContentRepository transactionContentRepository;
+	private TransactionContentQuery transactionContentQuery;
 	@Autowired
 	private TransactionContentUpdateCommand transactionContentUpdate;
 	@Autowired

@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 import edu.uark.registerapp.models.entities.TransactionContentEntity;
 
 public interface TransactionContentRepository extends CrudRepository<TransactionContentEntity, UUID> {
-    // Optional<TransactionContentEntity> findByTransactionId(UUID transactionId);     
+    Optional<TransactionContentEntity> findById(UUID id);     
 }
