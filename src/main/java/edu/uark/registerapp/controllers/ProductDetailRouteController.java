@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import edu.uark.registerapp.commands.products.ProductQuery;
+import edu.uark.registerapp.commands.transactions.TransactionQuery;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.Product;
@@ -41,6 +43,8 @@ public class ProductDetailRouteController extends BaseRouteController{
 			modelAndView.addObject("isElevated", false);
 		}
 
+		modelAndView.addObject("isTransaction", false);
+
 		return modelAndView;
 	}
 
@@ -57,6 +61,15 @@ public class ProductDetailRouteController extends BaseRouteController{
 				modelAndView.addObject("isElevated", true);
 		}else{
 			modelAndView.addObject("isElevated", false);
+		}
+
+		// Checks for valid transaction...
+		try{
+			this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+			this.transactionQuery.execute(); 
+			modelAndView.addObject("isTransaction", true);
+		}catch(Exception e){
+			modelAndView.addObject("isTransaction", false);
 		}
 
 		try {
@@ -80,4 +93,8 @@ public class ProductDetailRouteController extends BaseRouteController{
 	// Properties
 	@Autowired
 	private ProductQuery productQuery;
+
+	@Autowired
+	private TransactionQuery transactionQuery;
+
 }
