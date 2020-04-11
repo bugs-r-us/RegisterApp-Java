@@ -21,7 +21,18 @@
 			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
 		</div>
 
+		<h3 class="header-message">Search for a product by name</h3>
+		
+
 		<div class="productsWrapper">
+
+			<form method="get">
+				<input type="text" class="label" id="searchBar" name="search">
+				<button type="submit" class="action">Search</button>
+			</form>
+
+
+
 			<span th:if="${isElevated}">
 				<div>
 					<a href="/productDetail/" class="button">Create New</a>

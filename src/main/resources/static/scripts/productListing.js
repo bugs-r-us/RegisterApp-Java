@@ -32,3 +32,4 @@ document.addEventListener("DOMContentLoaded", () => {
 		productListElements[i].addEventListener("click", productClick);
 	}
 });
+});
