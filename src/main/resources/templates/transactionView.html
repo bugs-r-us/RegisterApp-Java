@@ -48,12 +48,13 @@
 								<button type="submit" class="msgBtn2">delete</button>
 							</form> -->
 						</div>
+				
 
 						<div class="inner"> 
 							<p><span th:text="${c.transactionContent.quantity}"></span></p>
 						</div>
 						<div class="inner">
-							<form action="/decrement" method="POST" class="inputContent">
+							<form action="/decrement" method="DELETE" class="inputContent">
 								<input id="transactionContentID" name="transactionContentID" type="hidden" th:value="${c.transactionContent.id}" />
 								<button type="submit" class="msgBtn2">-</button>
 							</form>
@@ -64,6 +65,12 @@
 			</tr>
 			
 			<p><span th:text="${transTotal}"></span></p>
+			
+			<div class="inner">
+				<form action="/transactionView/delete" method="DELETE" class="inputContent">
+					<button type="submit" class="msgBtn2"> delete transaction </button>
+				</form>
+			</div>
 			
 			
 
