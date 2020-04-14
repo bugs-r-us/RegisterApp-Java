@@ -137,8 +137,14 @@ public class TransactionContentRouteController extends BaseRouteController {
 		UUID transactionContentID = UUID.fromString(tranasctionIncrementDecrement.getTransactionContentID());
 		TransactionContent tc = this.transactionContentQuery.setTransactionContentId(transactionContentID).execute();
 		
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+		Transaction t = this.transactionQuery.execute();
+
+		float price = -(tc.getPrice());
 		try {
 			transactionContentDelete.setID(tc.getId()).execute();
+			updateTotal(t, price);
 			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.TRANSACTION_VIEW.getRoute()));
 		} catch (Exception exception) {
 			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.SIGN_IN.getRoute())).addObject(
