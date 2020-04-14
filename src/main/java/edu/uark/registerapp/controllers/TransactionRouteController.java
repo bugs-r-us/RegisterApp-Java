@@ -98,7 +98,7 @@ public class TransactionRouteController extends BaseRouteController  {
 			REDIRECT_PREPEND.concat(ViewNames.PRODUCT_LISTING.getRoute()));
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView deleteTransaction(final HttpServletRequest request) {
 
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
@@ -106,7 +106,7 @@ public class TransactionRouteController extends BaseRouteController  {
 
         Transaction t = this.transactionQuery.execute(); 
 
-		this.TransactionCancelCommand.setTransactionID(t.getTransactionId());
+		this.TransactionCancelCommand.setTransactionID(t.getTransactionId()).execute();
 
 		return new ModelAndView(
 			REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
