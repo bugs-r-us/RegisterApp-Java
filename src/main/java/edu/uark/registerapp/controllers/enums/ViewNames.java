@@ -6,7 +6,8 @@ public enum ViewNames {             //TEMPLATE NAMES ARE
 	PRODUCT_DETAIL("productDetail"),
 	EMPLOYEE_DETAIL("employeeDetail"),
 	PRODUCT_LISTING("productListing"),
-	TRANSACTION_VIEW("transactionView");
+	TRANSACTION_VIEW("transactionView"),
+	DELETE("delete");
 
 	
 	public String getRoute() {

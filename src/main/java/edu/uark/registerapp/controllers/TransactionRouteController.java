@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.uark.registerapp.commands.transactions.TransactionContentsQuery;
 import edu.uark.registerapp.commands.transactions.TransactionCreateCommand;
+import edu.uark.registerapp.commands.transactions.TransactionCancelCommand;
 import edu.uark.registerapp.commands.transactions.TransactionQuery;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
@@ -74,6 +75,7 @@ public class TransactionRouteController extends BaseRouteController  {
 	@RequestMapping(value = "/start", method = RequestMethod.GET)
 	public ModelAndView startTransaction(final HttpServletRequest request) {
 
+			
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 
 		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
@@ -96,12 +98,29 @@ public class TransactionRouteController extends BaseRouteController  {
 			REDIRECT_PREPEND.concat(ViewNames.PRODUCT_LISTING.getRoute()));
 	}
 
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public ModelAndView deleteTransaction(final HttpServletRequest request) {
+
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+	    this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+
+        Transaction t = this.transactionQuery.execute(); 
+
+		this.TransactionCancelCommand.setTransactionID(t.getTransactionId());
+
+		return new ModelAndView(
+			REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
+	}
+
+
 
 	// Properties
     @Autowired
 	private TransactionQuery transactionQuery;
 	@Autowired
 	private TransactionCreateCommand TransactionCreateCommand;
+	@Autowired
+	private TransactionCancelCommand TransactionCancelCommand;
     @Autowired
 	private TransactionContentsQuery transactionContentsQuery;
 	// Properties
