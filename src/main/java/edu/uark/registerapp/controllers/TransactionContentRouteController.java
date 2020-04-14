@@ -28,6 +28,7 @@ import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
 import edu.uark.registerapp.models.repositories.TransactionContentRepository;
 import edu.uark.registerapp.commands.transactions.TransactionContentCreateCommand;
+import edu.uark.registerapp.commands.transactions.TransactionContentDeleteCommand;
 import edu.uark.registerapp.commands.transactions.TransactionContentQuery;
 import edu.uark.registerapp.commands.transactions.TransactionContentUpdateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionUpdateCommand;
@@ -131,6 +132,20 @@ public class TransactionContentRouteController extends BaseRouteController {
 		return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.TRANSACTION_VIEW.getRoute()));
 	}
 
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public ModelAndView transactionContentRemove(TranasctionIncrementDecrement tranasctionIncrementDecrement, HttpServletRequest request) {
+		UUID transactionContentID = UUID.fromString(tranasctionIncrementDecrement.getTransactionContentID());
+		TransactionContent tc = this.transactionContentQuery.setTransactionContentId(transactionContentID).execute();
+		
+		try {
+			transactionContentDelete.setID(tc.getId()).execute();
+			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.TRANSACTION_VIEW.getRoute()));
+		} catch (Exception exception) {
+			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.SIGN_IN.getRoute())).addObject(
+					ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.SIGN_IN_ERROR.getMessage());
+		}
+		
+	}
 	//helper method because needed for conditionals
 	public void updateTotal(Transaction t, float price) {
 		//updates the total of tht transaction
@@ -153,4 +168,6 @@ public class TransactionContentRouteController extends BaseRouteController {
 	private TransactionContentUpdateCommand transactionContentUpdate;
 	@Autowired
 	private TransactionUpdateCommand transactionUpdate;
+	@Autowired
+	private TransactionContentDeleteCommand transactionContentDelete;
 }
