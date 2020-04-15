@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.uark.registerapp.models.api.Transaction;
+import edu.uark.registerapp.commands.transactions.TransactionQuery;
 import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
 import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
@@ -26,7 +29,6 @@ public class MainMenuRouteController extends BaseRouteController {
 		@RequestParam final Map<String, String> queryParameters,
 		final HttpServletRequest request
 	) {
-
 		// Check for error message / code
 		// This can be simplified...
 		String errorMsg = queryParameters.get(ViewModelNames.ERROR_MESSAGE.getValue());
@@ -38,6 +40,7 @@ public class MainMenuRouteController extends BaseRouteController {
 
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 		
+		
 		if (!activeUserEntity.isPresent()) {
 			return this.buildInvalidSessionResponse();
 		}
@@ -46,12 +49,24 @@ public class MainMenuRouteController extends BaseRouteController {
 			this.setErrorMessageFromQueryString(
 				new ModelAndView(ViewNames.MAIN_MENU.getViewName()),
 				queryParameters);
+			
 
 		if (EmployeeClassification.isElevatedUser(activeUserEntity.get().getClassification())){
 			modelAndView.addObject("isElevated", true);
 		}else{
 			modelAndView.addObject("isElevated", false);
 		}
+		this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+		try {
+			Transaction t = this.transactionQuery.execute(); 
+			modelAndView.addObject("start", "Update Transaction");
+			modelAndView.addObject("viewCurrent", true);
+
+		  }
+		  catch(Exception e) {
+			modelAndView.addObject("start", "Start Transaction");
+			modelAndView.addObject("viewCurrent", false);
+		  }
 
 		modelAndView.addObject(
 			ViewModelNames.IS_ELEVATED_USER.getValue(),
@@ -59,4 +74,8 @@ public class MainMenuRouteController extends BaseRouteController {
 		
 		return modelAndView;
 	}
+
+	@Autowired
+	private TransactionQuery transactionQuery;
+
 }

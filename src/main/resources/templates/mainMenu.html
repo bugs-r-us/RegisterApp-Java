@@ -30,9 +30,17 @@
 		
 		<table class="tableOne" id="mainMenuTable" >
 			<tbody >
+				<span th:if="${viewCurrent}">
 				<tr>
 					<td>
-						<button class="action" onclick="window.location.href='/transactionView/start'">Start Transaction</button>
+						<button class="action" onclick="window.location.href='/transactionView/'">View Current Cart </button>
+					</td>				
+				</tr>
+			</span>
+
+				<tr>
+					<td>
+						<button class="action" onclick="window.location.href='/transactionView/start'"> <p><span th:text="${start}"></span></p> </button>
 					</td>				
 				</tr>
 				<tr>
