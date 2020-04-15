@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.uark.registerapp.commands.transactions.TransactionContentsQuery;
 import edu.uark.registerapp.commands.transactions.TransactionCreateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionCancelCommand;
+import edu.uark.registerapp.commands.transactions.TransactionContentDeleteCommand;
 import edu.uark.registerapp.commands.transactions.TransactionSubmitTrans;
 
 
@@ -110,10 +111,14 @@ public class TransactionRouteController extends BaseRouteController  {
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 	    this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
 
-        Transaction t = this.transactionQuery.execute(); 
-
+		Transaction t = this.transactionQuery.execute(); 
+		this.transactionContentsQuery.setTransactionId(t.getTransactionId());
+		List<TransactionContent> tc = this.transactionContentsQuery.execute();
 		this.TransactionCancelCommand.setTransactionID(t.getTransactionId()).execute();
-
+		
+		for(TransactionContent transCon : tc) {
+			transactionContentDelete.setID(transCon.getId()).execute();
+		}
 		return new ModelAndView(
 			REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
 	}
@@ -145,6 +150,8 @@ public class TransactionRouteController extends BaseRouteController  {
 	private TransactionSubmitTrans TransactionSubmit;
     @Autowired
 	private TransactionContentsQuery transactionContentsQuery;
+	@Autowired
+	private TransactionContentDeleteCommand transactionContentDelete;
 	// Properties
 	@Autowired
 	private ProductQuery productQuery;
