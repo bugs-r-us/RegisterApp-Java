@@ -118,7 +118,7 @@ public class TransactionRouteController extends BaseRouteController  {
 			REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
 	}
 
-	@RequestMapping(value = "/submit", method = RequestMethod.GET)
+	@RequestMapping(value = "/submit", method = RequestMethod.POST)
 	public ModelAndView submitTransaction(final HttpServletRequest request) {
 
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
