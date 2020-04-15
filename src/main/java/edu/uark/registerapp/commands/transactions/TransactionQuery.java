@@ -17,13 +17,14 @@ import edu.uark.registerapp.models.repositories.TransactionRepository;
 public class TransactionQuery implements ResultCommandInterface<Transaction> {
 	@Override
 	public Transaction execute() {
-		final Optional<TransactionEntity> transactionEntity =
-			this.transactionRepository.findByEmployeeId(this.employeeId);
-		if (transactionEntity.isPresent()) {
-			return new Transaction(transactionEntity.get());
-		} else {
-			throw new NotFoundException("Not available");
+
+		for (final TransactionEntity transactionEntity : this.transactionRepository.findAll()){
+			if (transactionEntity.getEmployeeId().equals(this.employeeId) && 
+				transactionEntity.gettransactionstatus() == 0) {
+				return new Transaction(transactionEntity);
+			}
 		}
+		throw new NotFoundException("Not available");
 	}
 
 	// Properties

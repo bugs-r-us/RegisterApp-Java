@@ -29,12 +29,12 @@ public class TransactionCreateCommand implements ResultCommandInterface<Transact
 
 	@Transactional
 	private TransactionEntity createTransactionEntity() {
-		final Optional<TransactionEntity> queriedTransactionEntity =
-			this.transactionRepository
-				.findByEmployeeId(this.apiTransaction.getEmployeeId());
 
-		if (queriedTransactionEntity.isPresent()) {
-			throw new ConflictException("Employee ID");
+		for (final TransactionEntity transactionEntity : this.transactionRepository.findAll()){
+			if (transactionEntity.getEmployeeId().equals(this.apiTransaction.getEmployeeId()) && 
+				transactionEntity.gettransactionstatus() == 0) {
+					throw new ConflictException("Employee ID");
+			} 
 		}
 
 		return this.transactionRepository.save(
