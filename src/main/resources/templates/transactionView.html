@@ -1,20 +1,22 @@
+</html>
+
 <html xmlns:th="https://www.thymeleaf.org">
 
 <head>
-    <title>Register - Transaction View</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Register - Transaction View</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-    <link rel="stylesheet" type="text/css" href="/styles/master.css">
-    <link rel="stylesheet" type="text/css" href="/styles/transactionView.css">
+	<link rel="stylesheet" type="text/css" href="/styles/master.css">
+	<link rel="stylesheet" type="text/css" href="/styles/transactionView.css">
 
-    <script type="text/javascript" src="/scripts/master.js" defer></script>
-    <script type="text/javascript" src="/scripts/transactionView.js" defer></script>
+	<script type="text/javascript" src="/scripts/master.js" defer></script>
+	<script type="text/javascript" src="/scripts/transactionView.js" defer></script>
 </head>
 
 <body>
-    <div class="header">
-        <h1 class="primary-message">TRANSACTION</h1>
-    </div>
+	<div class="header">
+		<h1 class="primary-message">TRANSACTION</h1>
+	</div>
 
 
 	<div id="main" class="main">
@@ -24,9 +26,6 @@
 
 		<div class="transactionWrapper">
 			<span th:if="${emptyCart}">
-
-        <div class="transactionWrapper">
-            <span th:if="${emptyCart}">
 				<div>
 					<h1>EMPTY </h1>
 				</div>
@@ -40,7 +39,7 @@
 
 					<div id="outer">
 						<div class="inner">
-							<form action="/remove" method="POST" class="inputContent">
+							<form action="/removeContent" method="POST" class="inputContent">
                                 <input id="transactionContentID" name="transactionContentID" type="hidden" th:value="${c.transactionContent.id}" />
                                 <button type="submit" class="msgBtn">X</button>
                             </form>
@@ -62,7 +61,7 @@
 							<p><span th:text="${c.transactionContent.quantity}"></span></p>
 						</div>
 						<div class="inner">
-							<form action="/decrement" method="DELETE" class="inputContent">
+							<form action="/decrement" method="POST" class="inputContent">
 								<input id="transactionContentID" name="transactionContentID" type="hidden" th:value="${c.transactionContent.id}" />
 								<button type="submit" class="msgBtn2">-</button>
 							</form>

@@ -132,7 +132,7 @@ public class TransactionContentRouteController extends BaseRouteController {
 		return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.TRANSACTION_VIEW.getRoute()));
 	}
 
-	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	@RequestMapping(value = "/removeContent", method = RequestMethod.POST)
 	public ModelAndView transactionContentRemove(TranasctionIncrementDecrement tranasctionIncrementDecrement, HttpServletRequest request) {
 		UUID transactionContentID = UUID.fromString(tranasctionIncrementDecrement.getTransactionContentID());
 		TransactionContent tc = this.transactionContentQuery.setTransactionContentId(transactionContentID).execute();
