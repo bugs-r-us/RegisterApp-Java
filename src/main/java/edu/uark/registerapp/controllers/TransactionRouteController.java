@@ -1,5 +1,6 @@
 package edu.uark.registerapp.controllers;
 
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+
+
 import edu.uark.registerapp.commands.transactions.TransactionContentsQuery;
 import edu.uark.registerapp.commands.transactions.TransactionCreateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionCancelCommand;
+import edu.uark.registerapp.commands.transactions.TransactionSubmitTrans;
+
+
 import edu.uark.registerapp.commands.transactions.TransactionQuery;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
@@ -112,6 +118,20 @@ public class TransactionRouteController extends BaseRouteController  {
 			REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
 	}
 
+	@RequestMapping(value = "/submit", method = RequestMethod.GET)
+	public ModelAndView submitTransaction(final HttpServletRequest request) {
+
+		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
+	    this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+
+        Transaction t = this.transactionQuery.execute(); 
+
+		this.TransactionSubmit.setTransactionID(t.getTransactionId()).execute();
+
+		return new ModelAndView(
+			REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
+	}
+
 
 
 	// Properties
@@ -121,6 +141,8 @@ public class TransactionRouteController extends BaseRouteController  {
 	private TransactionCreateCommand TransactionCreateCommand;
 	@Autowired
 	private TransactionCancelCommand TransactionCancelCommand;
+	@Autowired
+	private TransactionSubmitTrans TransactionSubmit;
     @Autowired
 	private TransactionContentsQuery transactionContentsQuery;
 	// Properties
