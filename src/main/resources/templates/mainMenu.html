@@ -8,17 +8,67 @@
 	<link rel="stylesheet" type="text/css" href="/styles/master.css">
 	<link rel="stylesheet" type="text/css" href="/styles/mainMenu.css">
 	
-
 	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/scripts/master.js" defer></script>
 	<script type="text/javascript" src="/scripts/mainMenu.js" defer></script>
-	<script src = "jquery.js"></script>
-	
+	<script>
+		function includeHTML()
+		{
+			//target page attributes
+			var elements = [];
+			var index, data, file,  xhttp;
+			elements = document.getElementsByTagName("*");
+			
+			for (index= 0; index <= elements.length; index++)
+			{
+				//Request data from mark-up source mark-up file
+					if (elements[index].hasAttribute("include-file"))
+					{
+						file = elements[index].getAttribute("include-file");
+					}
+					
+					if (file)
+						{
+							console.log(elements[index]);
+							console.log("Template insertion request found.")
+							xhttp = new XMLHttpRequest();
+							data = elements[index]
+							xhttp.onreadystatechange = function()
+							{
+								if (this.readyState == 4)
+									{
+										switch(this.status)
+										{
+											case 404:
+											data.innerHTML = "404 Error: Page not found: ".concat(this.responseURL);
+
+												break;
+											case 200:
+											data.innerHTML = this.responseText;
+												break;
+										}
+										data.removeAttribute("include-file")
+										includeHTML();
+									}
+							}
+							xhttp.open("GET",file,true);
+							xhttp.send();
+							return;
+					}	
+			}
+		}
+	</script>
 </head>
+
+<div include-file="navbar.html"></div>
+<script>
+	includeHTML();
+</script>
 
 
 <body>
+	<div footer-include="include-file"></div>
 	
 
 	<div class="header">
