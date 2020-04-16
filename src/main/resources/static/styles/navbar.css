@@ -1,0 +1,27 @@
+.navbar {
+	background-color: rgb(65, 65, 182);
+}
+.navbar-brand {
+	text-align: left;
+	width: 100%;
+	height: auto;
+	color: white;
+	background-color:rgb(65, 65, 182);
+	
+}
+.navbar-brand:hover{
+    color: white;
+}
+
+
+
+
+.text{
+	font-size: 12pt;
+	color: white;
+}
+
+.text:hover{
+    color: white;
+
+}
