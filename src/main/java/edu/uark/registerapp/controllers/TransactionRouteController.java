@@ -36,11 +36,11 @@ import edu.uark.registerapp.models.api.Test;
 @Controller
 @RequestMapping(value = "/transactionView")
 public class TransactionRouteController extends BaseRouteController  {
-	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showTransaction(final HttpServletRequest request) {
+
 		ModelAndView modelAndView =
-			new ModelAndView(ViewNames.TRANSACTION_VIEW.getViewName());
+			new ModelAndView(ViewNames.TRANSACTION_VIEW.getViewName()); 
 
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 
@@ -48,18 +48,20 @@ public class TransactionRouteController extends BaseRouteController  {
         Transaction t = this.transactionQuery.execute(); 
 
 		List<TransactionContent> content = this.transactionContentsQuery.setTransactionId(t.getTransactionId()).execute();
+		
 		List<Test> tester= new LinkedList <Test>();
 		for (TransactionContent c: content )
 		{
 			tester.add( new Test(c, this.productQuery.setProductId(c.getProductID()).execute()));
 		}
 		
+		
 
 		if (content.isEmpty()){
 			modelAndView.addObject("emptyCart", true);
 		}else{
-			modelAndView.addObject("emptyCart", false);
-			modelAndView.addObject("listTest", tester);
+			modelAndView.addObject("emptyCart", false);  
+			modelAndView.addObject("listTest", tester);  
 			modelAndView.addObject("transTotal", t.getTotal());
 
 			//modelAndView.addObject("productList", tester.getTestProduct());
