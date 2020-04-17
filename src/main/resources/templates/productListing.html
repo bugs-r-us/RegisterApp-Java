@@ -56,10 +56,18 @@
 
 		<div class="productsWrapper">
 
-			<form method="get">
-				<input type="text" class="label" id="searchBar" name="search">
-				<button type="submit" class="action">Search</button>
-			</form>
+			<form class=“form-inline” method=“get”>
+                <div class=“form-group”>
+                    <input type=“text” class=“form-control” id=“searchBar” name=“search”>
+                </div>
+                <button type=“submit” class=“action”>Search</button>
+              </form>
+			  
+			  <span  th:if="${products}">
+				  <div>
+					  Did not find match.
+					</div>
+			  </span>
 
 
 
