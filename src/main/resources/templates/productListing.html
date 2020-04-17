@@ -21,9 +21,29 @@
 
 
 <body>
-	<?php include "./navbar.html"; ?>
+
+	<nav class = "navbar navbar-dark">
+		<div class = "container-fluid">
+			<div class = "navbar-header">
+				<div class = "container">
+					<a class = "navbar-brand" href = "#">
+						<span><img class = "d-inline-block align middle mr-2" src="/images/Logo.png" width="64" height="64"></span>
+						<span class = ".text">Register App™</span>
+					</a>
+					<span><ul class = "nav navbar-nav">
+						<li><a class = "text" onclick="window.location.href='/mainMenu'">Home</a></li>
+						<li><a class = "text" onclick="window.location.href='/productListing'">Products</a></li>
+						<li><a class = "text">Transactions</a></li>
+					</span>
+					</ul>
+				</div>
+				</div>		
+		</div>
+	</nav>
+
+
 	<div class="header">
-		<h1 class="primary-message">Products Listing!!</h1>
+		<h1 class="primary-message">Products Listing</h1>
 	</div>
 
 	<div id="main" class="main">
@@ -86,7 +106,7 @@
 			</script>
 		</div>
 	</div>
-		
+	<footer class="page-footer"></footer>
 </body>
 
 </html>
