@@ -145,8 +145,12 @@ table td.r, table th.r {
 	text-align: center;
 }
 table td.label {
-	
+	color: #808080;
+	font-size: 16;
 	font-weight: bold;
+	text-align: center;
+	padding: 3px;
+	float: left;
 }
 
 tbody tr {
@@ -183,7 +187,8 @@ table.hidden, tr.hidden, th.hidden, td.hidden {
 	width: fit-content;
 	width: -webkit-fit-content;
 	width: -moz-fit-content;
-	background: #EEE;
+	color: #808080;
+	font-size: 16; 
 	opacity: 0.8;
 }
 
@@ -195,3 +200,23 @@ table.hidden, tr.hidden, th.hidden, td.hidden {
 	color: #607D8B!important;
 }
 /* End product saved alert modal */
+
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 25%;
+    background-color:rgb(65, 65, 182);
+    color: white;
+    text-align: center;
+}
+
+.centered{
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+	width: 512px;
+	height:  512px;
+}

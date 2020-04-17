@@ -4,26 +4,22 @@
 	<title>Register - Sign In</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-	
+	<link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/styles/master.css">
 	<link rel="stylesheet" type="text/css" href="/styles/navbar.css">
-	<link rel="stylesheet" type="text/css" href="/styles/navbar.css">
+
 
 
 	<script type="text/javascript" src="/scripts/master.js" defer></script>
 	<script type="text/javascript" src="/scripts/signIn.js" defer></script>
 </head>
-	<nav class = "navbar navbar-dark">
-	<div class = "container-fluid">
-		<div class = "navbar-header">
-			<div class = "justify-content-center">
-				<span><img class = "d-inline-block align middle mr-2" src="/images/Logo.png" width="64" height="64"></span>
-			</div>
-</nav>
+
 <body>
 
 
-	<div class="header">
+
+	<img src="/images/Logo.png" class = "centered">
+	<div class="header">		
 		<h1 class="primary-message">Sign In</h1>
 	</div>
 		
@@ -31,7 +27,9 @@
 		<div id="error" th:class="${#strings.isEmpty(errorMessage)} ? hidden : ''">
 			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
 		</div>
-
+		<div>
+	
+		</div>
 		<form action="/signIn" method="POST" onsubmit="return validateForm();" class="inputContent">
 			<table id="employeeDetails">
 				<tbody>
@@ -52,9 +50,19 @@
 			<button value="Sign In" type="submit" class="action">Sign In</button>
 		</form>
 	</div>
-	<footer class="page-footer"></footer>
-		
+</div>
+<!-- <footer class=“page-footer”></footer> -->
+</div>
+</div>
+<!-- <footer class=“page-footer”></footer> -->
+
+	
+
 </body>
+
+
+
+
 
 </html>
 

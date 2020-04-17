@@ -3,6 +3,7 @@
 	margin: 0;
 	vertical-align: top;
 }
+
 .navbar-brand {
 	font-family: Futura;
 	text-align: left;
@@ -18,9 +19,6 @@
 	
     color: white;
 }
-
-
-
 
 .text{
 	font-family: Futura;
@@ -51,18 +49,8 @@
 	font-size: 20;
 }
 
-
-
-
-
 .navbar-dark{
 	border-radius: 0%;
 	color:white;
 	font-size: 16;
-}
-
-.page-footer{
-	background-color:rgb(65, 65, 182);
-	width: 100%;
-	height: 200px;
 }
