@@ -51,33 +51,15 @@
 			<h4 id="errorMessage" class="error-message" th:text="${errorMessage}"></h4>
 		</div>
 
-		<h3 class="header-message">Search for a product by name</h3>
-		
-
 		<div class="productsWrapper">
-
-			<form class=“form-inline” method=“get”>
-                <div class=“form-group”>
-                    <input type=“text” class=“form-control” id=“searchBar” name=“search”>
-                </div>
-                <button type=“submit” class=“action”>Search</button>
-              </form>
-			  
-			  <span  th:if="${products}">
-				  <div>
-					  Did not find match.
-					</div>
-			  </span>
-
-
-
+		
 			<span th:if="${isElevated}">
 				<div>
 					<a href="/productDetail/" class="button">Create New</a>
 				</div>
 			</span>
 
-			<br /><br />
+			<br /><br/>
 			<span th:if="${isTransaction}">
 				<div>
 					<a href="/transactionView/" class="button">View Transaction</a>
@@ -86,13 +68,30 @@
 
 			<br /><br />
 			<!-- Needs to be reformatted for price -->
+			<form method="get">
+                <div >
+                  <input type="text" class="form-control" id="searchBar" name="search" placeholder="Enter product">
+                  <button type="submit" class="form-group">Submit</button>
+                </div>
+			  </form>
+			
+			  
+			  <span th:if="${products.size()==0}">
+                <div>
+                <p>No Matches!</p>
+                </div>
+            </span>
+
 			<ul id="productsListing" class="products">
 				<li th:each="product : ${products}">
-					<a>ID:</a><input type="hidden" name="productId" th:value="${product.id}" />
+					<div>
+						<a>ID:</a><input type="hidden" name="productId" th:value="${product.id}" />
 					<span class="productLookupCodeDisplay" th:text="${product.lookupCode}">lookupCode</span>
 					<br/><a>Quantity:</a>&nbsp;&nbsp;<span class="productCountDisplay" th:text="${product.count}">0</span>
 					<!-- <br />&nbsp;&nbsp;<span class="productCreatedOnDisplay" th:text="${product.createdOn}">12/31/1999</span> -->
 					<br /><a>Price: $</a>&nbsp;&nbsp;<span class="productCreatedOnDisplay" th:text="${product.price}">$0.00</span>
+					</div>
+					
 				</li>
 			</ul>
 		</div>
