@@ -1,0 +1,58 @@
+.navbar {
+	background-color: rgb(65, 65, 182);
+	margin: 0;
+	vertical-align: top;
+}
+
+.navbar-brand {
+	font-family: Futura;
+	text-align: left;
+	width: 100%;
+	height: auto;
+	color: white;
+	background-color:rgb(65, 65, 182);
+	border-radius: 0px;
+	margin-bottom: 10;
+}
+
+.navbar-brand:hover{
+	
+    color: white;
+}
+
+.text{
+	font-family: Futura;
+	font-size: 12pt;
+	color: white;
+	border-radius: 1px;
+	background-color:rgb(65, 65, 182);
+}
+
+
+.text:hover{
+	transition-duration: 600ms;
+	color:rgb(65, 65, 182);
+	background-color:rgb(65, 65, 182);
+	font-size: 16;
+	border-radius: 100px;
+
+}
+
+.nav.navbar-nav{
+	font-size: 12pt;
+	color: white;
+}
+
+.navbar-default{
+	border-radius: 0%;
+	color:white;
+	font-size: 20;
+}
+
+.navbar-dark{
+	border-radius: 0%;
+	color:white;
+	font-size: 16;
+}
+
+.

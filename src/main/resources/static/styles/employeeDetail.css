@@ -9,4 +9,6 @@ select {
 	background-color: #FFFFFF;
 	font-size: 16px;
 	padding: 0em .25em 0em .25em;
+	border-color: rgb(65, 65, 182);
 }
+

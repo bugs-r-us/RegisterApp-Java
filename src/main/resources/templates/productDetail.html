@@ -3,16 +3,39 @@
 <head>
     <title>Register - Product</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+	
+	<link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/styles/master.css">
-    <link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
+	<link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
+	<link rel="stylesheet" type="text/css" href="/styles/navbar.css">
 
+	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/scripts/master.js" defer></script>
     <script type="text/javascript" src="/scripts/productDetail.js" defer></script>
 </head>
-​
-<body>
 
+<body>
+	
+	<nav class = "navbar navbar-dark">
+		<div class = "container-fluid">
+			<div class = "navbar-header">
+				<div class = "container">
+					<a class = "navbar-brand" href = "#">
+						<span><img class = "d-inline-block align middle mr-2" src="/images/Logo.png" width="64" height="64"></span>
+						<span class = ".text">Register App™</span>
+					</a>
+					<span><ul class = "nav navbar-nav">
+						<li><a class = "text" onclick="window.location.href='/mainMenu'">Home</a></li>
+						<li><a class = "text" onclick="window.location.href='/productListing'">Products</a></li>
+						<li><a class = "text">Transactions</a></li>
+					</span>
+					</ul>
+				</div>
+				</div>		
+		</div>
+	</nav>
+	
     <div class="header">
         <h1 class="primary-message">Product Detail</h1>
     </div>
@@ -109,7 +132,15 @@
 		<button value="Add" type="submit" class="action">Add</button>
 		</form>
 	</span>
+	<footer class="page-footer"></footer>
 		
 </body>
-​
+​</div>
+</div>
+<!-- <footer class=“page-footer”></footer> -->
+</body>
+<div class=“footer”>
+<p>Footer</p>
+</div>
+</html>
 </html>
