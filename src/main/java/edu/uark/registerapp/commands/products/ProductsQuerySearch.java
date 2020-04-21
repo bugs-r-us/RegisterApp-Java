@@ -17,6 +17,7 @@ public class ProductsQuerySearch implements ResultCommandInterface<List<Product>
 	public List<Product> execute() {
 		final LinkedList<Product> products = new LinkedList<Product>();
 
+        
 		for (final ProductEntity productEntity : productRepository.findAll()) {
             if (productEntity.getLookupCode().toLowerCase().contains(searchName.toLowerCase()))
             {
