@@ -1,6 +1,8 @@
 package edu.uark.registerapp.controllers;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,13 @@ import edu.uark.registerapp.commands.products.ProductQuery;
 import edu.uark.registerapp.models.api.Test;
 
 
+class SortByLookup implements Comparator<Test>{
+	public int compare(Test a, Test b){
+		return a.getProduct().getLookupCode().compareTo(b.getProduct().getLookupCode());
+	}
+}
+
+
 @Controller
 @RequestMapping(value = "/transactionView")
 public class TransactionRouteController extends BaseRouteController  {
@@ -49,14 +58,15 @@ public class TransactionRouteController extends BaseRouteController  {
         Transaction t = this.transactionQuery.execute(); 
 
 		List<TransactionContent> content = this.transactionContentsQuery.setTransactionId(t.getTransactionId()).execute();
-		
+
+
 		List<Test> tester= new LinkedList <Test>();
 		for (TransactionContent c: content )
 		{
 			tester.add( new Test(c, this.productQuery.setProductId(c.getProductID()).execute()));
 		}
 		
-		
+		Collections.sort(tester, new SortByLookup());		
 
 		if (content.isEmpty()){
 			modelAndView.addObject("emptyCart", true);

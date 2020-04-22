@@ -1,6 +1,5 @@
 package edu.uark.registerapp.controllers;
 
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.UUID;
@@ -10,23 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import edu.uark.registerapp.commands.employees.ActiveEmployeeExistsQuery;
-import edu.uark.registerapp.commands.employees.EmployeeSignInCommand;
 import edu.uark.registerapp.commands.products.ProductQuery;
 import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
-import edu.uark.registerapp.controllers.enums.QueryParameterNames;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
-import edu.uark.registerapp.models.api.EmployeeSignIn;
 import edu.uark.registerapp.models.api.Product;
 import edu.uark.registerapp.models.api.TranasctionIncrementDecrement;
 import edu.uark.registerapp.models.api.TransactionContent;
 import edu.uark.registerapp.models.api.TransactionContentAdd;
-import edu.uark.registerapp.models.api.Employee;
 import edu.uark.registerapp.models.entities.ActiveUserEntity;
-import edu.uark.registerapp.models.repositories.TransactionContentRepository;
 import edu.uark.registerapp.commands.transactions.TransactionContentCreateCommand;
 import edu.uark.registerapp.commands.transactions.TransactionContentDeleteCommand;
 import edu.uark.registerapp.commands.transactions.TransactionContentQuery;
@@ -78,7 +70,7 @@ public class TransactionContentRouteController extends BaseRouteController {
 			}
 			updateTotal(t, price);
 
-			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()));
+			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.PRODUCT_LISTING.getRoute()));
 		} catch (Exception exception) {
 			return new ModelAndView(REDIRECT_PREPEND.concat(ViewNames.SIGN_IN.getRoute())).addObject(
 					ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.SIGN_IN_ERROR.getMessage());
@@ -125,7 +117,11 @@ public class TransactionContentRouteController extends BaseRouteController {
 		tc.setQuantity(newQuantity);
 		tc.setPrice(newPrice);
 
-		transactionContentUpdate.setID(transactionContentID).setapiTCA(tc).execute();
+		if (newQuantity != 0){
+			transactionContentUpdate.setID(transactionContentID).setapiTCA(tc).execute();	
+		}else{
+			transactionContentDelete.setID(tc.getId()).execute();
+		}
 
 		updateTotal(t, difference);
 
