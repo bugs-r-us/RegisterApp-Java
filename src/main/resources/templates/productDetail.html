@@ -6,8 +6,8 @@
 	
 	<link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/styles/master.css">
-	<link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
 	<link rel="stylesheet" type="text/css" href="/styles/navbar.css">
+	<link rel="stylesheet" type="text/css" href="/styles/productDetail.css">
 
 	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -28,7 +28,7 @@
 					<span><ul class = "nav navbar-nav">
 						<li><a class = "text" onclick="window.location.href='/mainMenu'">Home</a></li>
 						<li><a class = "text" onclick="window.location.href='/productListing'">Products</a></li>
-						<li><a class = "text">Transactions</a></li>
+						<li><a class = "text" onclick="window.location.href='/transactionView'">Transaction</a></li>
 					</span>
 					</ul>
 				</div>
@@ -44,19 +44,21 @@
 			<table id="productDetails">
 				<tbody>
 					<tr class="hidden">
+						
 						<td>ID:</td>
 						<td>
 							<input id="productId" type="hidden" th:value="${!product.isEmpty} ? ${product.id} : ''" />
 						</td>
 					</tr>
 					<tr>
+						<td width="50%"></td>
 						<td class="label">Lookup Code:</td>
 						<td>
 							<input id="productLookupCode" type="text" th:value="${!product.isEmpty} ? ${product.lookupCode} : ''" class="update" th:disabled="${!isElevated}"/>
 						</td>
 					</tr>
 					<tr>
-						
+						<td></td>
 						<td class="label" >Count:</td>
 						
 						<td valign="middle">
@@ -69,6 +71,7 @@
 						
 					</tr>
 					<tr>
+						<td></td>
 						<td class="label">Price:</td>
 						<td>
 							<input id="productPrice" type="number" th:value="${!product.isEmpty} ? ${product.price} : ''" class="update" th:disabled="${!isElevated}" />
@@ -80,13 +83,10 @@
 
         <span th:if="${isElevated}">
 		<div class="productActionsWrapper">
-			<br />
 			<div id="deleteActionContainer" th:class="${product.isEmpty} ? hidden : ''">
 				<button id="deleteButton" type="button" class="action">Delete</button>
-				<br />
-				<br />
+				<button id="saveButton" type="button" class="action">Save</button>
 			</div>
-			<button id="saveButton" type="button" class="action">Save</button>
 		</div>
 		</span>
 
@@ -101,9 +101,10 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<span th:if="${isTransaction}">
-		<h3>Add to transaction</h3>
+		<div class= "productActionsWrapper">
+		<h1 class="primary-message">Add to transaction</h1>
 		<!-- TODO add error checking -->
 		<form action="/transactionContent" method="POST" class="inputContent">
 		<table id="addTransactionContent">
@@ -122,16 +123,17 @@
 				</tr>
 				<tr>
 					<td class="label">Quantity</td>
-					
 					<td>
 						<input type="number" id="quantity" name="quantity" value="1" class="update" >
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<button value="Add" type="submit" class="action">Add</button>
+		
+		<button id= "add" value="Add" type="submit" class="action">Add</button>
 		</form>
 	</span>
+</div>
 	<footer class="page-footer"></footer>
 		
 </body>
@@ -139,8 +141,7 @@
 </div>
 <!-- <footer class=“page-footer”></footer> -->
 </body>
-<div class=“footer”>
-<p>Footer</p>
+
 </div>
 </html>
 </html>

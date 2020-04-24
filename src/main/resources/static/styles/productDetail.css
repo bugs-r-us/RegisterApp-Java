@@ -34,3 +34,22 @@
 
 	color:rgb(65, 65, 182);
 }
+
+.productActionsWrapper
+{
+	text-align: center;
+
+}
+
+#deleteButton:hover{
+	border-width: 0px;
+	color:white;
+	background-color: red;
+}
+
+#add:hover,#saveButton:hover{
+
+	border-width: 0px;
+	color:white;
+	background-color: teal;
+}
