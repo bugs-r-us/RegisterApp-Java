@@ -59,11 +59,13 @@ public class TransactionRouteController extends BaseRouteController  {
 
 		List<TransactionContent> content = this.transactionContentsQuery.setTransactionId(t.getTransactionId()).execute();
 
+		int contentCount = 0;
 
 		List<Test> tester= new LinkedList <Test>();
 		for (TransactionContent c: content )
 		{
 			tester.add( new Test(c, this.productQuery.setProductId(c.getProductID()).execute()));
+			contentCount += c.getQuantity();
 		}
 		
 		Collections.sort(tester, new SortByLookup());		
@@ -74,6 +76,7 @@ public class TransactionRouteController extends BaseRouteController  {
 			modelAndView.addObject("emptyCart", false);  
 			modelAndView.addObject("listTest", tester);  
 			modelAndView.addObject("transTotal", t.getTotal());
+			modelAndView.addObject("transContentCount", contentCount);
 
 			//modelAndView.addObject("productList", tester.getTestProduct());
 		}

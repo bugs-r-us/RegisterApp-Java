@@ -103,20 +103,24 @@
 				
 			</tr>
 			
-			<p><span th:text="${transTotal}"></span></p>
+
+			<hr>
 			
+			<p>Item Count: <span th:text="${transContentCount}"></span></p>
+			<p>Total Price: $<span th:text="${transTotal}"></span></p>
+	
+			<br>
 			<div class="inner">
-				<form action="/transactionView/delete" method="POST" class="inputContent">
-					<button type="submit" class="msgBtn2"> delete transaction </button>
+				<form id="delete_form" action="/transactionView/delete" method="POST" class="inputContent">
+					<a href="javascript:{}" onclick="document.getElementById('delete_form').submit(); return false;" class="button">Delete Transaction</a>
 				</form>
 			</div>
 
 			<div class="inner">
-				<form action="/transactionView/submit" method="POST" class="inputContent">
-					<button type="submit" class="msgBtn2"> submit that b </button>
+				<form id="submit_form" action="/transactionView/submit" method="POST" class="inputContent">
+					<a href="javascript:{}" onclick="document.getElementById('submit_form').submit(); return false;" class="button">Submit Transaction</a>
 				</form>
 			</div>
-			
 			
 
 		</div>
