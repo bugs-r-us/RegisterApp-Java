@@ -51,6 +51,8 @@ public class MainMenuRouteController extends BaseRouteController {
 				queryParameters);
 			
 
+		modelAndView.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), errorMsg);
+
 		if (EmployeeClassification.isElevatedUser(activeUserEntity.get().getClassification())){
 			modelAndView.addObject("isElevated", true);
 		}else{

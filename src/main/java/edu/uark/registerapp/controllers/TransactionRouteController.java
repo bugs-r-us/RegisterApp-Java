@@ -25,6 +25,7 @@ import edu.uark.registerapp.commands.transactions.TransactionSubmitTrans;
 
 
 import edu.uark.registerapp.commands.transactions.TransactionQuery;
+import edu.uark.registerapp.controllers.enums.QueryParameterMessages;
 import edu.uark.registerapp.controllers.enums.ViewModelNames;
 import edu.uark.registerapp.controllers.enums.ViewNames;
 import edu.uark.registerapp.models.api.Transaction;
@@ -54,44 +55,50 @@ public class TransactionRouteController extends BaseRouteController  {
 
 		final Optional<ActiveUserEntity> activeUserEntity = this.getCurrentUser(request);
 
-        this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
-        Transaction t = this.transactionQuery.execute(); 
-
-		List<TransactionContent> content = this.transactionContentsQuery.setTransactionId(t.getTransactionId()).execute();
-
-		int contentCount = 0;
-
-		List<Test> tester= new LinkedList <Test>();
-		for (TransactionContent c: content )
-		{
-			tester.add( new Test(c, this.productQuery.setProductId(c.getProductID()).execute()));
-			contentCount += c.getQuantity();
-		}
-		
-		Collections.sort(tester, new SortByLookup());		
-
-		if (content.isEmpty()){
-			modelAndView.addObject("emptyCart", true);
-		}else{
-			modelAndView.addObject("emptyCart", false);  
-			modelAndView.addObject("listTest", tester);  
-			modelAndView.addObject("transTotal", t.getTotal());
-			modelAndView.addObject("transContentCount", contentCount);
-
-			//modelAndView.addObject("productList", tester.getTestProduct());
-		}
-
 		try {
-			// modelAndView.addObject( ViewModelNames.TRANSACTION.getValue(), this.transactionQuery.execute());
+			this.transactionQuery.setEmployeeId(activeUserEntity.get().getEmployeeId());
+			Transaction t = this.transactionQuery.execute(); 	
+			
+			List<TransactionContent> content = this.transactionContentsQuery.setTransactionId(t.getTransactionId()).execute();
 
-			modelAndView.addObject( ViewModelNames.TRANSACTION.getValue(), content);
-
-		} catch (final Exception e) {
-			modelAndView.addObject(ViewModelNames.ERROR_MESSAGE.getValue(),e.getMessage());
-			modelAndView.addObject(ViewModelNames.TRANSACTION.getValue(),(new Transaction[0]));
+			int contentCount = 0;
+	
+			List<Test> tester= new LinkedList <Test>();
+			for (TransactionContent c: content )
+			{
+				tester.add( new Test(c, this.productQuery.setProductId(c.getProductID()).execute()));
+				contentCount += c.getQuantity();
+			}
+			
+			Collections.sort(tester, new SortByLookup());		
+	
+			if (content.isEmpty()){
+				modelAndView.addObject("emptyCart", true);
+			}else{
+				modelAndView.addObject("emptyCart", false);  
+				modelAndView.addObject("listTest", tester);  
+				modelAndView.addObject("transTotal", t.getTotal());
+				modelAndView.addObject("transContentCount", contentCount);
+	
+				//modelAndView.addObject("productList", tester.getTestProduct());
+			}
+	
+			try {
+				// modelAndView.addObject( ViewModelNames.TRANSACTION.getValue(), this.transactionQuery.execute());
+	
+				modelAndView.addObject( ViewModelNames.TRANSACTION.getValue(), content);
+	
+			} catch (final Exception e) {
+				modelAndView.addObject(ViewModelNames.ERROR_MESSAGE.getValue(),e.getMessage());
+				modelAndView.addObject(ViewModelNames.TRANSACTION.getValue(),(new Transaction[0]));
+			}
+			
+			return modelAndView;
+		} catch (Exception e) {
+			return new ModelAndView(
+				REDIRECT_PREPEND.concat(ViewNames.MAIN_MENU.getRoute()))
+				.addObject(ViewModelNames.ERROR_MESSAGE.getValue(), QueryParameterMessages.NO_TRANSACTION_ERROR.getMessage());
 		}
-		
-		return modelAndView;
 	}
 
 	@RequestMapping(value = "/start", method = RequestMethod.GET)
